@@ -1,0 +1,202 @@
+{
+    "places": [
+        {
+            "nationalPhoneNumber": "81 820 05 09",
+            "formattedAddress": "Krochmalna 24/24, 20-401 Lublin",
+            "websiteUri": "https://conetso.com/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Conetso Group - Usługi informatyczne, Obsługa IT, Oprogramowanie, Chmura, Sieci, Serwery Lublin",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "538 537 623",
+            "formattedAddress": "Jaskółcza 13, 20-330 Lublin",
+            "websiteUri": "https://mits.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Software house Lublin - Mits | Strony internetowe Lublin",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "81 820 04 10",
+            "formattedAddress": "Dulęby 2A, 20-326 Lublin",
+            "websiteUri": "https://www.spark-it.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "SPARK-IT Sp. z o.o. - Obsługa informatyczna firm",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "609 615 653",
+            "formattedAddress": "Łabędzia 17, 20-335 Lublin",
+            "websiteUri": "http://sqlsoft.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "SQLSoft USŁUGI INFORMATYCZNE",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "81 745 24 52",
+            "formattedAddress": "Droga Męczenników Majdanka 55, 20-325 Lublin",
+            "websiteUri": "http://www.itmoose.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Itmoose",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "690 600 120",
+            "formattedAddress": "Zamojska 21/20a, 20-102 Lublin",
+            "websiteUri": "http://accessibility.com.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "accessibility sp. z o. o.",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "535 505 359",
+            "formattedAddress": "Makowa 4B, 20-442 Lublin",
+            "websiteUri": "https://piotr-zajac.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "IT-Connection — Specjalista IT | Piotr Zając",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "600 318 181",
+            "formattedAddress": "Nałkowskich 132/3, 20-470 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Pogotowie Komputerowe Lublin",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "508 203 040",
+            "formattedAddress": "Wojciechowska 20, 20-704 Lublin",
+            "websiteUri": "https://getsupport.com.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "GetSupport – Wsparcie IT i Outsourcing dla Firm Lublin",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "81 444 42 21",
+            "formattedAddress": "Galeria Olimp, Aleja Spółdzielczości Pracy 36/77, 20-147 Lublin",
+            "websiteUri": "http://arrakis.lublin.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "ARRAKIS Salon i Serwis Komputerowy",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "81 744 57 00",
+            "formattedAddress": "Droga Męczenników Majdanka 74, 20-325 Lublin",
+            "websiteUri": "https://vico.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "VICO - Sklep Komputerowy",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "792 233 364",
+            "formattedAddress": "Leonarda 1A, 20-625 Lublin",
+            "websiteUri": "http://cyberkompserwis.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Serwis komputerowy - Cyberkompserwis",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "579 064 258",
+            "formattedAddress": "Kazimierza Pułaskiego 23A, 20-461 Lublin",
+            "websiteUri": "https://informatyk.support/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Informatyk.Support (serwis, naprawa i modernizacja laptopów)",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "887 831 588",
+            "formattedAddress": "Królowej Jadwigi 14, 20-282 Lublin",
+            "websiteUri": "https://cyfrowapomoc.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Cyfrowa Pomoc Strony/Sklepy internetowe Marketing i Serwis IT",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "500 722 872",
+            "formattedAddress": "Diamentowa 29, 20-471 Lublin",
+            "websiteUri": "https://www.stronainternetowa.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "StronaInternetowa.pl",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "506 611 601",
+            "formattedAddress": "Jana Kiepury 5a, 30-330 Lublin",
+            "websiteUri": "http://sitt.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "SITT Sp. z o.o.",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "605 614 699",
+            "formattedAddress": "Rusałka 17/lokal 4, 20-103 Lublin",
+            "websiteUri": "http://informatyk.lublin.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "informatyk.lublin.pl",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "797 305 205",
+            "formattedAddress": "Tomasza Zana 11a, 20-601 Lublin",
+            "websiteUri": "https://datalers.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Datalers - Usługi informatyczne Lublin",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "22 378 45 58",
+            "formattedAddress": "ul, Jana Pawła II 17, 20-400 Lublin",
+            "websiteUri": "http://www.ttms.com/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Transition Technologies (TTMS i TTSW)",
+                "languageCode": "pl"
+            }
+        },
+        {
+            "nationalPhoneNumber": "502 730 715",
+            "formattedAddress": "Motorowa 7, 20-214 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Tom's Laboratory",
+                "languageCode": "en"
+            }
+        }
+    ]
+}
