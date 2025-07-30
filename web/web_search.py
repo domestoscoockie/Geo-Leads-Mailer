@@ -1,0 +1,211 @@
+import json
+import pydantic
+import requests
+from config import Config
+from serpapi.google_search import GoogleSearch
+from typing import Self
+import requests
+import json
+import geocoder
+import time
+from abc import ABC, abstractmethod
+from pydantic import BaseModel
+
+class Rect(BaseModel):
+    low: tuple[float, float]
+    high: tuple[float, float]
+
+class Query(ABC):
+    def __init__(self, location: str, language="pl", country="PL"):
+        self.location = location       
+        self.language = language
+        self.country = country
+
+    @abstractmethod
+    def search(self) -> dict:
+        pass
+
+    @abstractmethod
+    def set_query(self, query: str) -> Self:
+        pass
+
+
+class SearchQuery(Query):
+    def __init__(self, language: str, country: str, location: str):
+        super().__init__(language=language, country=country, location=location)
+        self.location = location
+
+    def set_query(self, query: str) -> Self:
+        self.query = query
+        return self
+
+    @property
+    def params(self) -> dict:
+            params = {
+                "q": self.query,
+                "location": self.location,
+                "hl": self.language,
+                "gl": self.country,
+                "google_domain": "google.com",
+                "api_key": Config.SERAPI_KEY
+            }
+            return params
+
+    def search(self) -> dict:
+        return GoogleSearch(self.params).get_dict()
+
+
+class LocationQuery(Query):
+    def __init__(self, location: str = "Polska", language: str = "pl", country: str = "PL"):
+        super().__init__(location=location, language=language, country=country)
+        self.location = location
+
+    def set_query(self, query: str) -> Self:
+        self.query = query
+        return self    
+
+    @property
+    def coordinates(self) -> dict:
+        return self.coordinates_from_address(self.location)
+
+    
+    def coordinates_from_address(self, address: str) -> dict:
+        g = geocoder.arcgis(address)
+        if g.ok:
+            return {
+                "latitude": g.latlng[0],
+                "longitude": g.latlng[1],
+            }
+        else:
+            return {"error": address}
+
+    def geometry(self):
+        url = "https://maps.googleapis.com/maps/api/geocode/json"
+        params = {
+            "address": self.location,
+            "key": Config.GOOGLE_LOCATION_API_KEY
+        }
+        
+        response = requests.get(url, params=params)
+        data = response.json()
+        
+        if data["results"]:
+            bounds = data["results"][0]["geometry"]["bounds"]
+            return {
+                "northeast": bounds["northeast"],
+                "southwest": bounds["southwest"]
+            }
+        return None
+
+    def generate_rectangles(self, step_minutes=2.0) -> list[Rect]:
+
+        bounds = self.geometry()
+        if not bounds:
+            return []
+        
+        step_deg = step_minutes / 60.0
+        
+        sw_lat = bounds["southwest"]["lat"]
+        sw_lng = bounds["southwest"]["lng"] 
+        ne_lat = bounds["northeast"]["lat"]
+        ne_lng = bounds["northeast"]["lng"]
+        
+        rectangles = []
+        
+        lat = sw_lat
+        while lat < ne_lat:
+            lng = sw_lng
+            while lng < ne_lng:
+                high_lat = min(lat + step_deg, ne_lat)
+                high_lng = min(lng + step_deg, ne_lng)
+                
+                rect = Rect(
+                    low=(lat, lng),           # southwest corner
+                    high=(high_lat, high_lng) # northeast corner
+                )
+                rectangles.append(rect)
+                
+                lng += step_deg
+            lat += step_deg
+        
+        print(f"Generated {len(rectangles)} rectangles with {step_minutes}' spacing")
+        return rectangles
+
+    def search(self, rectangles: list[Rect]) -> dict:
+        i = 0
+        unique_places = {}  
+        print(len(rectangles), "rectangles to search")
+        
+        for rect in rectangles:
+            url = 'https://places.googleapis.com/v1/places:searchText'
+
+            headers = {
+                'Content-Type': 'application/json',
+                'X-Goog-Api-Key': Config.GOOGLE_LOCATION_API_KEY,
+                'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.websiteUri,places.nationalPhoneNumber,places.businessStatus,nextPageToken'
+            }
+        
+            next_page_token = None
+            max_pages = 20 
+
+            for _ in range(max_pages):
+                i += 1
+                print(i)
+
+                data = {    
+                    "textQuery": f"{self.query} in {self.location}",
+                    "languageCode": self.language,
+                    "regionCode": self.country,
+                    "maxResultCount": 20,
+                    "locationBias": {
+                        "rectangle": {
+                            "low": {
+                                "latitude": rect.low[0],
+                                "longitude": rect.low[1]
+                            },
+                            "high": {
+                                "latitude": rect.high[0],
+                                "longitude": rect.high[1]
+                            }
+                        }
+                    }
+                }
+                
+                if next_page_token:
+                    data["pageToken"] = next_page_token
+                
+                response = requests.post(url, json=data, headers=headers)
+                result = response.json()
+                
+                if "places" in result:
+                    for place in result["places"]:
+                        place_key = place.get("displayName", {}).get("text", "")
+                        if place_key and place_key not in unique_places:
+                            unique_places[place_key] = place
+                
+                next_page_token = result.get("nextPageToken")
+                if not next_page_token:
+                    break
+                    
+        return {self.location: unique_places}
+
+
+    def save(self, results: dict) -> None:
+        with open("location_search_results.json", "w", encoding="utf-8") as f:
+            json.dump(results, f, ensure_ascii=False, indent=4)
+
+
+if __name__ == "__main__":
+    location_search = LocationQuery(location="Lublin", language="pl", country="PL")
+    
+    bounds = location_search.geometry()
+    print("Bounds:", bounds)
+    
+    rectangles = location_search.generate_rectangles(step_minutes=6.0)
+    
+    location_search.set_query("sklep")
+    results = location_search.search(rectangles)
+    places_dict = results.get(location_search.location, {})
+
+    location_search.save(results)
+

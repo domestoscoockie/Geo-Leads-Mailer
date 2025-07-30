@@ -1,202 +1,836 @@
 {
-    "places": [
-        {
-            "nationalPhoneNumber": "81 820 05 09",
-            "formattedAddress": "Krochmalna 24/24, 20-401 Lublin",
-            "websiteUri": "https://conetso.com/",
+    "Lublin": {
+        "Sklep Całodobowy MIX": {
+            "nationalPhoneNumber": "517 816 047",
+            "formattedAddress": "Lubartowska 49, 20-400 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Conetso Group - Usługi informatyczne, Obsługa IT, Oprogramowanie, Chmura, Sieci, Serwery Lublin",
+                "text": "Sklep Całodobowy MIX",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "538 537 623",
-            "formattedAddress": "Jaskółcza 13, 20-330 Lublin",
-            "websiteUri": "https://mits.pl/",
+        "Tutto Sklep Spożywczy": {
+            "formattedAddress": "Organowa 5B, 20-400 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Software house Lublin - Mits | Strony internetowe Lublin",
+                "text": "Tutto Sklep Spożywczy",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "81 820 04 10",
-            "formattedAddress": "Dulęby 2A, 20-326 Lublin",
-            "websiteUri": "https://www.spark-it.pl/",
+        "Sklep spożywczy": {
+            "nationalPhoneNumber": "607 560 187",
+            "formattedAddress": "Bursaki 6, 20-150 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "SPARK-IT Sp. z o.o. - Obsługa informatyczna firm",
+                "text": "Sklep spożywczy",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "609 615 653",
-            "formattedAddress": "Łabędzia 17, 20-335 Lublin",
-            "websiteUri": "http://sqlsoft.pl/",
+        "Galeria Olimp": {
+            "nationalPhoneNumber": "81 444 14 14",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34, 20-147 Lublin",
+            "websiteUri": "http://www.galeriaolimp.com.pl/",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "SQLSoft USŁUGI INFORMATYCZNE",
+                "text": "Galeria Olimp",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "81 745 24 52",
-            "formattedAddress": "Droga Męczenników Majdanka 55, 20-325 Lublin",
-            "websiteUri": "http://www.itmoose.pl/",
+        "Supermarket NOVA": {
+            "nationalPhoneNumber": "81 748 15 11",
+            "formattedAddress": "al. Tysiąclecia 4, 20-121 Lublin",
+            "websiteUri": "https://www.google.pl/url?sa=t&source=web&rct=j&url=https://m.facebook.com/NovaLublin/%3Flocale2%3Dpl_PL&ved=2ahUKEwid69TDhLrdAhUCWywKHVrtByIQjjgwIXoECAYQAQ&usg=AOvVaw0nHbu_GD40UudXZjXBZ_H4",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Itmoose",
+                "text": "Supermarket NOVA",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "690 600 120",
-            "formattedAddress": "Zamojska 21/20a, 20-102 Lublin",
-            "websiteUri": "http://accessibility.com.pl/",
+        "Sklep Cynamonowy. Upominki": {
+            "nationalPhoneNumber": "694 153 239",
+            "formattedAddress": "Grodzka 21, 20-112 Lublin",
+            "websiteUri": "https://m.facebook.com/sklep.cynamonowy/?locale2=pl_PL",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "accessibility sp. z o. o.",
+                "text": "Sklep Cynamonowy. Upominki",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "535 505 359",
-            "formattedAddress": "Makowa 4B, 20-442 Lublin",
-            "websiteUri": "https://piotr-zajac.pl/",
+        "Polska Marka - sklep z pamiątkami Lublin - sklep patriotyczny - Magnets - Souvenirs": {
+            "nationalPhoneNumber": "518 059 881",
+            "formattedAddress": "Archidiakońska 6, 20-113 Lublin",
+            "websiteUri": "https://sklep.polskamarka.pl/",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "IT-Connection — Specjalista IT | Piotr Zając",
+                "text": "Polska Marka - sklep z pamiątkami Lublin - sklep patriotyczny - Magnets - Souvenirs",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "600 318 181",
-            "formattedAddress": "Nałkowskich 132/3, 20-470 Lublin",
+        "Oficjalny Sklep Kibica Motoru Lublin": {
+            "nationalPhoneNumber": "519 519 276",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34/40, 20-147 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Pogotowie Komputerowe Lublin",
+                "text": "Oficjalny Sklep Kibica Motoru Lublin",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "508 203 040",
-            "formattedAddress": "Wojciechowska 20, 20-704 Lublin",
-            "websiteUri": "https://getsupport.com.pl/",
+        "Hey. Sklep z upominkami": {
+            "nationalPhoneNumber": "81 740 40 34",
+            "formattedAddress": "Doktora Witolda Chodźki 14, 20-093 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "GetSupport – Wsparcie IT i Outsourcing dla Firm Lublin",
+                "text": "Hey. Sklep z upominkami",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "81 444 42 21",
-            "formattedAddress": "Galeria Olimp, Aleja Spółdzielczości Pracy 36/77, 20-147 Lublin",
-            "websiteUri": "http://arrakis.lublin.pl/",
+        "Lux. Sklep spożywczy PSS Społem": {
+            "nationalPhoneNumber": "81 747 88 37",
+            "formattedAddress": "Lubartowska 43, 20-400 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "ARRAKIS Salon i Serwis Komputerowy",
+                "text": "Lux. Sklep spożywczy PSS Społem",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "81 744 57 00",
-            "formattedAddress": "Droga Męczenników Majdanka 74, 20-325 Lublin",
-            "websiteUri": "https://vico.pl/",
+        "Benedetto Sklep ze zdrową żywnością, ziołami, owocami i warzywami": {
+            "nationalPhoneNumber": "81 534 73 34",
+            "formattedAddress": "Krakowskie Przedmieście 42, 20-002 Lublin",
+            "websiteUri": "https://sklep.benedetto.com.pl/",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "VICO - Sklep Komputerowy",
+                "text": "Benedetto Sklep ze zdrową żywnością, ziołami, owocami i warzywami",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "792 233 364",
-            "formattedAddress": "Leonarda 1A, 20-625 Lublin",
-            "websiteUri": "http://cyberkompserwis.pl/",
+        "Sklep spożywczy - MINI MARKET": {
+            "formattedAddress": "20-001, al. Generała Władysława Andersa 1, 20-204 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Serwis komputerowy - Cyberkompserwis",
+                "text": "Sklep spożywczy - MINI MARKET",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "579 064 258",
-            "formattedAddress": "Kazimierza Pułaskiego 23A, 20-461 Lublin",
-            "websiteUri": "https://informatyk.support/",
+        "Martes Sport": {
+            "nationalPhoneNumber": "571 445 614",
+            "formattedAddress": "al. Unii Lubelskiej 2/VIVO!, 20-108 Lublin",
+            "websiteUri": "http://www.sklepmartes.pl/",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Informatyk.Support (serwis, naprawa i modernizacja laptopów)",
+                "text": "Martes Sport",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "887 831 588",
-            "formattedAddress": "Królowej Jadwigi 14, 20-282 Lublin",
-            "websiteUri": "https://cyfrowapomoc.pl/",
+        "SKENDE Shopping Centrum Handlowe": {
+            "nationalPhoneNumber": "81 460 59 66",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 88, 20-147 Lublin",
+            "websiteUri": "https://www.skendeshopping.pl/",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Cyfrowa Pomoc Strony/Sklepy internetowe Marketing i Serwis IT",
+                "text": "SKENDE Shopping Centrum Handlowe",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "500 722 872",
-            "formattedAddress": "Diamentowa 29, 20-471 Lublin",
-            "websiteUri": "https://www.stronainternetowa.pl/",
+        "FORPEPE Sklep Chinski": {
+            "formattedAddress": "Lwowska 12f, 20-128 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "StronaInternetowa.pl",
+                "text": "FORPEPE Sklep Chinski",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "506 611 601",
-            "formattedAddress": "Jana Kiepury 5a, 30-330 Lublin",
-            "websiteUri": "http://sitt.pl/",
+        "OUTLET LUBLIN - Wrangler, Lee, Mustang, markowe spodnie i odzież": {
+            "nationalPhoneNumber": "530 595 588",
+            "formattedAddress": "Wyścigowa 9, 20-425 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "SITT Sp. z o.o.",
+                "text": "OUTLET LUBLIN - Wrangler, Lee, Mustang, markowe spodnie i odzież",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "605 614 699",
-            "formattedAddress": "Rusałka 17/lokal 4, 20-103 Lublin",
-            "websiteUri": "http://informatyk.lublin.pl/",
+        "VIVO! Lublin": {
+            "nationalPhoneNumber": "81 464 43 01",
+            "formattedAddress": "al. Unii Lubelskiej 2, 20-108 Lublin",
+            "websiteUri": "https://vivo-shopping.com/pl/lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "informatyk.lublin.pl",
+                "text": "VIVO! Lublin",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "797 305 205",
-            "formattedAddress": "Tomasza Zana 11a, 20-601 Lublin",
-            "websiteUri": "https://datalers.pl/",
+        "Decathlon Lublin": {
+            "nationalPhoneNumber": "81 475 65 30",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 26, 20-147 Lublin",
+            "websiteUri": "https://www.decathlon.pl/store-view/sport-shop-lublin-czechow-0070045300453?utm_campaign=google_business_website&utm_medium=organic&utm_source=google",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Datalers - Usługi informatyczne Lublin",
+                "text": "Decathlon Lublin",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "22 378 45 58",
-            "formattedAddress": "ul, Jana Pawła II 17, 20-400 Lublin",
-            "websiteUri": "http://www.ttms.com/",
+        "Lewiatan Krasińskiego": {
+            "nationalPhoneNumber": "699 870 449",
+            "formattedAddress": "Zygmunta Krasińskiego 3, 20-709 Lublin",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Transition Technologies (TTMS i TTSW)",
+                "text": "Lewiatan Krasińskiego",
                 "languageCode": "pl"
             }
         },
-        {
-            "nationalPhoneNumber": "502 730 715",
-            "formattedAddress": "Motorowa 7, 20-214 Lublin",
+        "sinsay": {
+            "nationalPhoneNumber": "503 826 784",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34, 20-147 Lublin",
+            "websiteUri": "https://www.sinsay.com/pl/pl/",
             "businessStatus": "OPERATIONAL",
             "displayName": {
-                "text": "Tom's Laboratory",
-                "languageCode": "en"
+                "text": "sinsay",
+                "languageCode": "pl"
+            }
+        },
+        "MUSI Lublin Sklep medyczny": {
+            "nationalPhoneNumber": "81 747 45 12",
+            "formattedAddress": "Magnoliowa 2, 20-143 Lublin",
+            "websiteUri": "http://www.musi.lublin.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "MUSI Lublin Sklep medyczny",
+                "languageCode": "pl"
+            }
+        },
+        "Euro Sklep": {
+            "formattedAddress": "Lubartowska 67, 20-400 Lublin",
+            "websiteUri": "https://www.facebook.com/profile.php?id=100083140233412",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Euro Sklep",
+                "languageCode": "pl"
+            }
+        },
+        "sklepMati Lublin - wózki, foteliki, meble dziecięce": {
+            "nationalPhoneNumber": "81 477 55 39",
+            "formattedAddress": "Krochmalna 3, 20-401 Lublin",
+            "websiteUri": "https://sklepmati.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "sklepMati Lublin - wózki, foteliki, meble dziecięce",
+                "languageCode": "pl"
+            }
+        },
+        "Benedetto Sklep ze zdrową żywnością ziołami, owocami i warzywami (Produkty Benedyktyńskie)": {
+            "nationalPhoneNumber": "81 440 10 29",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34/7, 20-147 Lublin",
+            "websiteUri": "https://sklep.benedetto.com.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Benedetto Sklep ze zdrową żywnością ziołami, owocami i warzywami (Produkty Benedyktyńskie)",
+                "languageCode": "pl"
+            }
+        },
+        "CARRY Sklep Odzieżowy (Centrum Handlowe Vivo! Lublin)": {
+            "nationalPhoneNumber": "81 464 43 35",
+            "formattedAddress": "al. Unii Lubelskiej 2, 20-400 Lublin",
+            "websiteUri": "https://carry.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "CARRY Sklep Odzieżowy (Centrum Handlowe Vivo! Lublin)",
+                "languageCode": "pl"
+            }
+        },
+        "Top Market": {
+            "nationalPhoneNumber": "501 527 926",
+            "formattedAddress": "Nowy Świat 37F, 20-418 Lublin",
+            "websiteUri": "https://www.facebook.com/TopMarketLubelskie",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Top Market",
+                "languageCode": "pl"
+            }
+        },
+        "HalfPrice": {
+            "nationalPhoneNumber": "887 472 454",
+            "formattedAddress": "al. Unii Lubelskiej 2, 20-108 Lublin",
+            "websiteUri": "https://www.halfprice.eu/pl/?utm_source=google&utm_medium=mybusiness&utm_campaign=3984",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "HalfPrice",
+                "languageCode": "pl"
+            }
+        },
+        "Militarne.pl Militaria Lublin Sklep militarny Lublin": {
+            "nationalPhoneNumber": "511 700 807",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34, 20-147 Lublin",
+            "websiteUri": "http://www.militarne.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Militarne.pl Militaria Lublin Sklep militarny Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Action Lublin": {
+            "nationalPhoneNumber": "32 630 58 98",
+            "formattedAddress": "Orkana 4, 20-400 Lublin",
+            "websiteUri": "https://www.action.com/pl-pl/sklepy/lublin/?utm_campaign=localbusiness&utm_source=google&utm_medium=organic&utm_content=A231",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Action Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Sklep Cloudshop E-papierosy Lublin - Chodźki Auchan": {
+            "nationalPhoneNumber": "533 398 636",
+            "formattedAddress": "Doktora Witolda Chodźki 14, 20-093 Lublin",
+            "websiteUri": "https://cloudshop.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklep Cloudshop E-papierosy Lublin - Chodźki Auchan",
+                "languageCode": "pl"
+            }
+        },
+        "Sklep spożywczo-przemysłowy Orlik": {
+            "formattedAddress": "Hutnicza 20B, 20-218 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklep spożywczo-przemysłowy Orlik",
+                "languageCode": "pl"
+            }
+        },
+        "Nasz Sklep S.A. Delikatesy Premium": {
+            "nationalPhoneNumber": "81 747 58 43",
+            "formattedAddress": "Kazimierza Tumidajskiego 2, 20-400 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Nasz Sklep S.A. Delikatesy Premium",
+                "languageCode": "pl"
+            }
+        },
+        "Odido": {
+            "formattedAddress": "Wojciecha Żywnego 10, 20-854 Lublin",
+            "websiteUri": "https://www.sklepy-odido.pl/nasze-sklepy/polaris",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Odido",
+                "languageCode": "pl"
+            }
+        },
+        "Outlet Lublin": {
+            "nationalPhoneNumber": "81 458 12 00",
+            "formattedAddress": "Mełgiewska 16D, 20-234 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Outlet Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Intuicja Magiczny Sklep": {
+            "nationalPhoneNumber": "725 734 656",
+            "formattedAddress": "Prezydenta Gabriela Narutowicza 23/2U, 20-400 Lublin",
+            "websiteUri": "https://www.intuicja.com/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Intuicja Magiczny Sklep",
+                "languageCode": "pl"
+            }
+        },
+        "Sex Shop Lublin Pink Shop": {
+            "nationalPhoneNumber": "534 058 095",
+            "formattedAddress": "Prezydenta Gabriela Narutowicza 52, 20-016 Lublin",
+            "websiteUri": "http://www.pinkshop.pl/?utm_source=gmf&utm_medium=organic&utm_campaign=gmf2",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sex Shop Lublin Pink Shop",
+                "languageCode": "pl"
+            }
+        },
+        "Sklep CityWine Lublin": {
+            "nationalPhoneNumber": "81 442 10 00",
+            "formattedAddress": "Krótka 3, 20-077 Lublin",
+            "websiteUri": "http://winnica.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklep CityWine Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Banan Sklep Spożywczy": {
+            "formattedAddress": "Hieronima Łopacińskiego 3, 20-041 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Banan Sklep Spożywczy",
+                "languageCode": "pl"
+            }
+        },
+        "In Form": {
+            "nationalPhoneNumber": "663 899 569",
+            "formattedAddress": "Dolna Panny Marii 5/3, 20-010 Lublin",
+            "websiteUri": "http://www.inform24.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "In Form",
+                "languageCode": "pl"
+            }
+        },
+        "Centrum ogrodnicze Lublin, sklep ogrodniczy - Zielone Hobby": {
+            "nationalPhoneNumber": "501 955 416",
+            "formattedAddress": "Choiny 1, 20-816 Lublin",
+            "websiteUri": "https://zielonehobby.com/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Centrum ogrodnicze Lublin, sklep ogrodniczy - Zielone Hobby",
+                "languageCode": "pl"
+            }
+        },
+        "Sklep spożywczo-przemysłowy El-Hen": {
+            "formattedAddress": "Władysława Kunickiego 55A, 20-422 Lublin",
+            "websiteUri": "https://m.facebook.com/profile.php/?id=61553949703101",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklep spożywczo-przemysłowy El-Hen",
+                "languageCode": "pl"
+            }
+        },
+        "Kaufland Lublin-Czuby": {
+            "nationalPhoneNumber": "800 300 062",
+            "formattedAddress": "Orkana 4, 20-400 Lublin",
+            "websiteUri": "https://www.sklep.kaufland.pl/?cid=pl:loc:uberall_1724410184664",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Kaufland Lublin-Czuby",
+                "languageCode": "pl"
+            }
+        },
+        "Pamiątki. Sklep z pamiątkami. Antyki Lublin. Galeria z obrazami.": {
+            "nationalPhoneNumber": "696 041 295",
+            "formattedAddress": "Grodzka 1, 20-400 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Pamiątki. Sklep z pamiątkami. Antyki Lublin. Galeria z obrazami.",
+                "languageCode": "pl"
+            }
+        },
+        "Rusałka. Sklep LSS Społem": {
+            "nationalPhoneNumber": "81 532 98 04",
+            "formattedAddress": "Prezydenta Gabriela Narutowicza 38/42, 20-400 Lublin",
+            "websiteUri": "https://lublin.spolem.org.pl/?page=places&idm=69",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Rusałka. Sklep LSS Społem",
+                "languageCode": "pl"
+            }
+        },
+        "Mohito": {
+            "nationalPhoneNumber": "34 316 25 49",
+            "formattedAddress": "CHR Lublin Plaza, Lipowa 13, 20-024 Lublin",
+            "websiteUri": "http://www.mohito.com/pl/pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Mohito",
+                "languageCode": "pl"
+            }
+        },
+        "Odido. Sklep spożywczy": {
+            "nationalPhoneNumber": "81 442 22 13",
+            "formattedAddress": "Bolesława Śmiałego 4, 20-611 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Odido. Sklep spożywczy",
+                "languageCode": "pl"
+            }
+        },
+        "Sklep myśliwski Aleksander": {
+            "nationalPhoneNumber": "81 532 42 00",
+            "formattedAddress": "Orla 8, 20-022 Lublin",
+            "websiteUri": "https://sklep-mysliwski.eu/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklep myśliwski Aleksander",
+                "languageCode": "pl"
+            }
+        },
+        "JYSK Lublin, Olimp": {
+            "nationalPhoneNumber": "22 288 59 00",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 32/lok. 97, 20-147 Lublin",
+            "websiteUri": "https://jysk.pl/znajdz-sklep/lublin/aleja-spoldzielczosci-pracy?utm_source=google_maps&utm_medium=organic&utm_campaign=retail_store_P485",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "JYSK Lublin, Olimp",
+                "languageCode": "pl"
+            }
+        },
+        "WITTCHEN": {
+            "nationalPhoneNumber": "518 022 727",
+            "formattedAddress": "Lipowa 20, 20-024 Lublin",
+            "websiteUri": "https://www.wittchen.com/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "WITTCHEN",
+                "languageCode": "pl"
+            }
+        },
+        "Bytom. Sklep z odzieżą męską": {
+            "nationalPhoneNumber": "728 542 622",
+            "formattedAddress": "CHR Lublin Plaza, Lipowa 13, 20-030 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Bytom. Sklep z odzieżą męską",
+                "languageCode": "pl"
+            }
+        },
+        "Venezia": {
+            "nationalPhoneNumber": "510 999 547",
+            "formattedAddress": "Centrum Handlowe Lublin Plaza, Lipowa 13, 20-020 Lublin",
+            "websiteUri": "https://www.venezia.pl/?utm_source=google&utm_medium=maps&utm_campaign=wizytowki&utm_term=lpv",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Venezia",
+                "languageCode": "pl"
+            }
+        },
+        "Maxi Moda Gerry Weber Lublin": {
+            "nationalPhoneNumber": "81 741 41 01",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34/85, 20-147 Lublin",
+            "websiteUri": "http://www.maximoda.com.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Maxi Moda Gerry Weber Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Sklep Cloudshop E-papierosy Lublin - CH OLIMP": {
+            "nationalPhoneNumber": "794 318 023",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34, 20-147 Lublin",
+            "websiteUri": "https://cloudshop.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklep Cloudshop E-papierosy Lublin - CH OLIMP",
+                "languageCode": "pl"
+            }
+        },
+        "Bricoman Lublin": {
+            "nationalPhoneNumber": "81 475 75 25",
+            "formattedAddress": "al. Kraśnicka 128, 20-718 Lublin",
+            "websiteUri": "https://www.bricoman.pl/sklepy/lublin-al-krasnicka",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Bricoman Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Rampers Lublin": {
+            "nationalPhoneNumber": "81 441 72 40",
+            "formattedAddress": "Inżynierska 2, 20-484 Lublin",
+            "websiteUri": "https://rampers.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Rampers Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Sklepik Szwedzki IKEA Lublin": {
+            "formattedAddress": "SKENDE Shopping Centrum handlowe, Aleja Spółdzielczości Pracy 86, 20-149 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklepik Szwedzki IKEA Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Nasz Sklep ASKO": {
+            "formattedAddress": "Montażowa 16, 20-214 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Nasz Sklep ASKO",
+                "languageCode": "pl"
+            }
+        },
+        "CARRY Sklep Odzieżowy (C.H. SKENDE Shopping Lublin)": {
+            "nationalPhoneNumber": "81 452 11 03",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 88, 20-149 Lublin",
+            "websiteUri": "http://carry.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "CARRY Sklep Odzieżowy (C.H. SKENDE Shopping Lublin)",
+                "languageCode": "pl"
+            }
+        },
+        "SpożywczyLublin.pl - sklep online z dostawą": {
+            "nationalPhoneNumber": "601 340 796",
+            "formattedAddress": "Lotnicza 3, 20-322 Lublin",
+            "websiteUri": "http://www.wedlinazlublina.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "SpożywczyLublin.pl - sklep online z dostawą",
+                "languageCode": "pl"
+            }
+        },
+        "JYSK Lublin, Mełgiewska": {
+            "nationalPhoneNumber": "22 288 59 00",
+            "formattedAddress": "Mełgiewska 2, 20-209 Lublin",
+            "websiteUri": "https://jysk.pl/znajdz-sklep/lublin/melgiewska?utm_source=google_maps&utm_medium=organic&utm_campaign=retail_store_P236",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "JYSK Lublin, Mełgiewska",
+                "languageCode": "pl"
+            }
+        },
+        "Oficjalny Sklep Motoru Lublin": {
+            "nationalPhoneNumber": "793 207 661",
+            "formattedAddress": "Stadionowa 1, 20-405 Lublin",
+            "websiteUri": "https://sklep.motorlublin.eu/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Oficjalny Sklep Motoru Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Gatta (Plaza Lublin)": {
+            "nationalPhoneNumber": "785 383 200",
+            "formattedAddress": "CHR Lublin Plaza, Lipowa 13, 20-020 Lublin",
+            "websiteUri": "http://www.gatta.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Gatta (Plaza Lublin)",
+                "languageCode": "pl"
+            }
+        },
+        "OBI Lublin Chemiczna": {
+            "nationalPhoneNumber": "800 624 624",
+            "formattedAddress": "Chemiczna 2, 20-329 Lublin",
+            "websiteUri": "https://www.obi.pl/stores/lublin-chemiczna?wt__mc=gp.pl013_Lublin_Chemiczna%E2%80%A6",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "OBI Lublin Chemiczna",
+                "languageCode": "pl"
+            }
+        },
+        "Inne Meble - ekspozycja": {
+            "nationalPhoneNumber": "81 745 96 30",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 30, 20-400 Lublin",
+            "websiteUri": "http://www.innemeble.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Inne Meble - ekspozycja",
+                "languageCode": "pl"
+            }
+        },
+        "Sklep Całodobowy": {
+            "nationalPhoneNumber": "537 499 750",
+            "formattedAddress": "Ignacego Jana Paderewskiego, 20-816 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Sklep Całodobowy",
+                "languageCode": "pl"
+            }
+        },
+        "Carrefour Market": {
+            "nationalPhoneNumber": "81 748 02 40",
+            "formattedAddress": "al. Generała Władysława Andersa 9, 20-249 Lublin",
+            "websiteUri": "https://www.carrefour.pl/sklep/lublin/generala-andersa-9",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Carrefour Market",
+                "languageCode": "pl"
+            }
+        },
+        "Delikatesy Całodobowe 24h": {
+            "formattedAddress": "Turystyczna 9F, 20-001 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Delikatesy Całodobowe 24h",
+                "languageCode": "pl"
+            }
+        },
+        "Paco Athletic Shop": {
+            "nationalPhoneNumber": "509 348 429",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 32, 20-411 Lublin",
+            "websiteUri": "http://www.paco.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Paco Athletic Shop",
+                "languageCode": "pl"
+            }
+        },
+        "Lubazo. Sklep spożywczy": {
+            "nationalPhoneNumber": "81 747 58 43",
+            "formattedAddress": "Kazimierza Tumidajskiego 2, 20-400 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Lubazo. Sklep spożywczy",
+                "languageCode": "pl"
+            }
+        },
+        "GODAN Lublin Galeria Olimp | balony z helem i dekoracje": {
+            "nationalPhoneNumber": "784 603 248",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 32, 20-147 Lublin",
+            "websiteUri": "https://balonyidekoracje.pl/lubelskie/lublin-al-spoldzielczosci-pracy-32/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "GODAN Lublin Galeria Olimp | balony z helem i dekoracje",
+                "languageCode": "pl"
+            }
+        },
+        "MOTOKASIA Lublin - Detailing Shop": {
+            "nationalPhoneNumber": "500 164 001",
+            "formattedAddress": "Bursaki 19/15, 20-150 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "MOTOKASIA Lublin - Detailing Shop",
+                "languageCode": "pl"
+            }
+        },
+        "Tani Sklepik": {
+            "formattedAddress": "Lubartowska 39, 20-116 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Tani Sklepik",
+                "languageCode": "pl"
+            }
+        },
+        "Maxi Zoo Lublin Galeria Olimp": {
+            "nationalPhoneNumber": "538 817 207",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 36, 20-147 Lublin",
+            "websiteUri": "https://www.maxizoo.pl/promocje-oferty/sklepy-stacjonarne/?utm_medium=seo&utm_campaign=yext",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Maxi Zoo Lublin Galeria Olimp",
+                "languageCode": "pl"
+            }
+        },
+        "JYSK Lublin, Koncertowa": {
+            "nationalPhoneNumber": "22 288 59 00",
+            "formattedAddress": "Koncertowa 4A, 20-843 Lublin",
+            "websiteUri": "https://jysk.pl/znajdz-sklep/lublin/koncertowa?utm_source=google_maps&utm_medium=organic&utm_campaign=retail_store_P355",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "JYSK Lublin, Koncertowa",
+                "languageCode": "pl"
+            }
+        },
+        "Greenpoint": {
+            "nationalPhoneNumber": "531 911 410",
+            "formattedAddress": "ul, Aleja Spółdzielczości Pracy 34, 20-147 Lublin",
+            "websiteUri": "http://greenpoint.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Greenpoint",
+                "languageCode": "pl"
+            }
+        },
+        "Rybka": {
+            "nationalPhoneNumber": "797 410 137",
+            "formattedAddress": "Bursaki 6/566, 20-150 Lublin",
+            "websiteUri": "http://www.skleprybka.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Rybka",
+                "languageCode": "pl"
+            }
+        },
+        "Lemon Vape Shop Lublin": {
+            "nationalPhoneNumber": "790 425 423",
+            "formattedAddress": "Aleja Spółdzielczości Pracy 34, 20-147 Lublin",
+            "websiteUri": "http://facebook.com/lemonvapepolska",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Lemon Vape Shop Lublin",
+                "languageCode": "pl"
+            }
+        },
+        "Czekoladowy Sklep Solidarność Goplana Jutrzenka Grześki Colian": {
+            "nationalPhoneNumber": "81 445 94 60",
+            "formattedAddress": "Krakowskie Przedmieście 58, 20-002 Lublin",
+            "websiteUri": "http://islodycze.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Czekoladowy Sklep Solidarność Goplana Jutrzenka Grześki Colian",
+                "languageCode": "pl"
+            }
+        },
+        "Społem LSS Sklep Spożywczy LUX mini Nr 115": {
+            "nationalPhoneNumber": "81 532 57 33",
+            "formattedAddress": "plac Wolności 1, 20-005 Lublin",
+            "websiteUri": "https://lublin.spolem.org.pl/?page=places&idm=69",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Społem LSS Sklep Spożywczy LUX mini Nr 115",
+                "languageCode": "pl"
+            }
+        },
+        "Chińskie Centrum Handlowe": {
+            "nationalPhoneNumber": "81 503 10 08",
+            "formattedAddress": "Fryderyka Chopina 4A, 20-026 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Chińskie Centrum Handlowe",
+                "languageCode": "pl"
+            }
+        },
+        "Cropp": {
+            "nationalPhoneNumber": "785 003 079",
+            "formattedAddress": "CHR Lublin Plaza, Lipowa 13, 20-024 Lublin",
+            "websiteUri": "https://www.cropp.com/pl/pl/?utm_source=google_location&utm_medium=organic&utm_campaign=1512170",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Cropp",
+                "languageCode": "pl"
+            }
+        },
+        "Flying Tiger Copenhagen": {
+            "nationalPhoneNumber": "81 448 00 01",
+            "formattedAddress": "Lipowa 13, 20-020 Lublin",
+            "websiteUri": "https://flyingtiger.com/pages/store-locator?utm_source=Google&utm_medium=Store+Locator+Traffic&utm_campaign=Uberall&utm_id=Uberall#!/l/pl/lublin/lipowa-13/pl01022",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Flying Tiger Copenhagen",
+                "languageCode": "pl"
+            }
+        },
+        "Mango. Sklep spożywczy": {
+            "nationalPhoneNumber": "81 740 01 00",
+            "formattedAddress": "Górska 9, 20-863 Lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Mango. Sklep spożywczy",
+                "languageCode": "pl"
+            }
+        },
+        "Stokrotka": {
+            "nationalPhoneNumber": "81 888 92 00",
+            "formattedAddress": "Krakowskie Przedmieście 55, 20-400 Lublin",
+            "websiteUri": "https://stokrotka.pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Stokrotka",
+                "languageCode": "pl"
+            }
+        },
+        "Ryłko": {
+            "nationalPhoneNumber": "666 818 241",
+            "formattedAddress": "CHR Lublin Plaza, Lipowa 13, 20-024 Lublin",
+            "websiteUri": "https://www.rylko.com/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Ryłko",
+                "languageCode": "pl"
+            }
+        },
+        "Taranko": {
+            "nationalPhoneNumber": "81 532 94 46",
+            "formattedAddress": "C.H. Plaza, Lipowa 13, 20-020 Lublin",
+            "websiteUri": "https://taranko.com/pl/",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Taranko",
+                "languageCode": "pl"
+            }
+        },
+        "Stelo": {
+            "nationalPhoneNumber": "733 888 950",
+            "formattedAddress": "Mieczysława Biernackiego 12, 20-089 Lublin",
+            "websiteUri": "https://www.stelo.pl/cms/sklep-lublin",
+            "businessStatus": "OPERATIONAL",
+            "displayName": {
+                "text": "Stelo",
+                "languageCode": "pl"
             }
         }
-    ]
+    }
 }
