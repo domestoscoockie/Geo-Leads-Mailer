@@ -1,11 +1,13 @@
 import json
 import requests
-from config import Config
+from config import Config, logger
 from typing import Self
 import requests
 import json
 from abc import ABC, abstractmethod
 from pydantic import BaseModel
+
+
 
 class Rect(BaseModel):
     low: tuple[float, float]
@@ -84,8 +86,8 @@ class LocationQuery(Query):
                 
                 lng += step_deg
             lat += step_deg
-        
-        print(f"Generated {len(rectangles)} rectangles with {step_minutes}' spacing")
+        logger.info(f"Generated {len(rectangles)} rectangles with {step_minutes}' spacing")
+
         return rectangles
 
     def search(self, rectangles: list[Rect]) -> dict:
@@ -138,12 +140,15 @@ class LocationQuery(Query):
                 next_page_token = result.get("nextPageToken")
                 if not next_page_token:
                     break
-                    
-        return {self.location: unique_places}
+
+        if len(unique_places) == 0:
+            raise ValueError("No places found for the given query and location.")
+        
+        return {f'{self.location}-{self.query}' : unique_places}
 
 
     def save(self, results: dict) -> None:
-        with open("location_search_results.json", "w", encoding="utf-8") as f:
+        with open(f"results/{self.location}-{self.query}.json", "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=4)
 
 
@@ -151,7 +156,7 @@ if __name__ == "__main__":
     location_search = LocationQuery(location="Lublin", language="pl", country="PL")
     
     bounds = location_search.geometry()
-    print("Bounds:", bounds)
+    logger.info("Bounds: %s", bounds)
     
     rectangles = location_search.generate_rectangles(step_minutes=6.0)
     
