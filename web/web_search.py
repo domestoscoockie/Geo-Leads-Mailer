@@ -1,13 +1,9 @@
 import json
-import pydantic
 import requests
 from config import Config
-from serpapi.google_search import GoogleSearch
 from typing import Self
 import requests
 import json
-import geocoder
-import time
 from abc import ABC, abstractmethod
 from pydantic import BaseModel
 
@@ -149,8 +145,6 @@ class LocationQuery(Query):
     def save(self, results: dict) -> None:
         with open("location_search_results.json", "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=4)
-
-
 
 
 if __name__ == "__main__":
