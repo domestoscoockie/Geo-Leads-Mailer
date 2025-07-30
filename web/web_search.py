@@ -30,31 +30,6 @@ class Query(ABC):
         pass
 
 
-class SearchQuery(Query):
-    def __init__(self, language: str, country: str, location: str):
-        super().__init__(language=language, country=country, location=location)
-        self.location = location
-
-    def set_query(self, query: str) -> Self:
-        self.query = query
-        return self
-
-    @property
-    def params(self) -> dict:
-            params = {
-                "q": self.query,
-                "location": self.location,
-                "hl": self.language,
-                "gl": self.country,
-                "google_domain": "google.com",
-                "api_key": Config.SERAPI_KEY
-            }
-            return params
-
-    def search(self) -> dict:
-        return GoogleSearch(self.params).get_dict()
-
-
 class LocationQuery(Query):
     def __init__(self, location: str = "Polska", language: str = "pl", country: str = "PL"):
         super().__init__(location=location, language=language, country=country)
@@ -64,20 +39,6 @@ class LocationQuery(Query):
         self.query = query
         return self    
 
-    @property
-    def coordinates(self) -> dict:
-        return self.coordinates_from_address(self.location)
-
-    
-    def coordinates_from_address(self, address: str) -> dict:
-        g = geocoder.arcgis(address)
-        if g.ok:
-            return {
-                "latitude": g.latlng[0],
-                "longitude": g.latlng[1],
-            }
-        else:
-            return {"error": address}
 
     def geometry(self):
         url = "https://maps.googleapis.com/maps/api/geocode/json"
@@ -132,10 +93,7 @@ class LocationQuery(Query):
         return rectangles
 
     def search(self, rectangles: list[Rect]) -> dict:
-        i = 0
         unique_places = {}  
-        print(len(rectangles), "rectangles to search")
-        
         for rect in rectangles:
             url = 'https://places.googleapis.com/v1/places:searchText'
 
@@ -149,8 +107,6 @@ class LocationQuery(Query):
             max_pages = 20 
 
             for _ in range(max_pages):
-                i += 1
-                print(i)
 
                 data = {    
                     "textQuery": f"{self.query} in {self.location}",
@@ -193,6 +149,8 @@ class LocationQuery(Query):
     def save(self, results: dict) -> None:
         with open("location_search_results.json", "w", encoding="utf-8") as f:
             json.dump(results, f, ensure_ascii=False, indent=4)
+
+
 
 
 if __name__ == "__main__":
