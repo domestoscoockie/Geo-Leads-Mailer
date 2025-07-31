@@ -1,6 +1,6 @@
 import json
 import requests
-from app.config import Config, logger
+from apps.config import Config, logger
 from typing import Self
 import requests
 import json

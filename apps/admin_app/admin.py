@@ -16,11 +16,10 @@ class SearchQueryForm(forms.ModelForm):
 @admin.register(SearchQuery)
 class SearchQueryAdmin(admin.ModelAdmin):
     form = SearchQueryForm
-    list_display = ('query', 'location', 'accuracy', 'created_at')
-    list_filter = ('location', 'accuracy', 'created_at')
+    list_display = ('query', 'location', 'accuracy', 'id')
+    list_filter = ('location', 'accuracy')
     search_fields = ('query', 'location')
-    readonly_fields = ('created_at',)
-    ordering = ('-created_at',)
+    ordering = ('-id',)
 
 class UserForm(forms.ModelForm):
     class Meta:
@@ -44,21 +43,16 @@ class UserAdmin(admin.ModelAdmin):
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ('name', 'website', 'location', 'industry', 'created_at')
-    list_filter = ('industry', 'location', 'created_at')
+    list_display = ('name', 'website', 'location', 'industry', 'id')
+    list_filter = ('industry', 'location')
     search_fields = ('name', 'website', 'location')
-    readonly_fields = ('created_at',)
     
     fieldsets = (
         ('Basic Information', {
             'fields': ('name', 'website', 'location', 'industry')
         }),
         ('Contact Information', {
-            'fields': ('emails', 'phones'),
-            'classes': ('collapse',)
-        }),
-        ('Metadata', {
-            'fields': ('created_at',),
+            'fields': ('emails', 'phones', 'address'),
             'classes': ('collapse',)
         }),
     )
