@@ -12,6 +12,7 @@ dependencies = [
     "google-search-results>=2.4.2",
     "osmnx>=2.0.5",
     "overpy>=0.7",
+    "psycopg2-binary>=2.9.10",
     "pydantic>=2.11.7",
     "requests>=2.32.4",
     "thefuck>=3.32",
