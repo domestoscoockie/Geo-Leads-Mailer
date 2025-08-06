@@ -17,26 +17,35 @@ class SearchQuery(models.Model):
     accuracy = models.FloatField(default=0.0)
     location = models.CharField(max_length=255)
     query = models.CharField(max_length=255)
-    result = models.JSONField()
+    company = models.ForeignKey(
+        'Company',
+        related_name='search_queries',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
+    )
+
 
     @staticmethod
     def save_result(user: User, location: str, query: str, accuracy: float, result: dict) -> None:
+
         search_query, created = SearchQuery.objects.update_or_create(
             location=location,
             query=query,
             defaults={
                 'accuracy': accuracy,
-                'result': result
+                'result': result,
             }
         )
+        search_query.company = Company.save_results(result)
+        search_query.save()
+        
         user.results.add(search_query)
         user.save()
 
     def __str__(self):
         return f"{self.query}-{self.location}"
 
-    class Meta:
-        ordering = ['-id']
 
 
 class Company(models.Model):
@@ -44,24 +53,24 @@ class Company(models.Model):
     industry = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     website = models.URLField(blank=True, null=True)
-    emails = models.CharField(max_length=255, blank=True)
+    email = models.CharField(max_length=255, blank=True)
     phones = models.CharField(max_length=255, blank=True)
     address = models.CharField(max_length=255, blank=True)
 
     @staticmethod
-    def save_results(results: dict) -> None:
-        fullquery = list(results.keys())[0]
+    def save_results(result: dict) -> None:
+        fullquery = list(result.keys())[0]
         
-        for result in results.get(fullquery, []):
+        for obj in result.get(fullquery, []):
             company, created = Company.objects.update_or_create(
-                name=result.get('name', ''),
+                name=obj.get('name', ''),
                 defaults={
-                    'location': fullquery.split('-')[0] if '-' in fullquery else fullquery,
-                    'industry': fullquery.split('-')[1] if '-' in fullquery else '',
-                    'website': result.get('website', ''),
-                    'emails': result.get('emails', ''),
-                    'phones': result.get('phones', ''),
-                    'address': result.get('address', '')
+                    'location': fullquery.split('-')[0],
+                    'industry': fullquery.split('-')[1],
+                    'website': obj.get('website', ''),
+                    'email': obj.get('email', ''),
+                    'phones': obj.get('phones', ''),
+                    'address': obj.get('address', '')
                 }
             )
 
@@ -71,4 +80,3 @@ class Company(models.Model):
     
     class Meta:
         verbose_name_plural = "Companies"
-        ordering = ['-id']

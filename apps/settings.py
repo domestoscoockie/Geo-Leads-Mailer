@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "apps.admin_app",  # Zmieniona nazwa aplikacji
+    "apps.admin_app",
+    "apps.app",
 ]
 
 MIDDLEWARE = [

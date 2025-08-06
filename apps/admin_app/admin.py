@@ -6,9 +6,9 @@ from .models import User, SearchQuery, Company
 class SearchQueryForm(forms.ModelForm):
     class Meta:
         model = SearchQuery
-        fields = ['accuracy', 'location', 'query', 'result']
+        fields = ['accuracy', 'location', 'query', 'company']
         widgets = {
-            'result': forms.Textarea(attrs={'rows': 10, 'cols': 80}),
+            'company': forms.Select(attrs={'size': 10}),
             'query': forms.TextInput(attrs={'size': 50}),
             'location': forms.TextInput(attrs={'size': 50}),
         }
@@ -19,7 +19,6 @@ class SearchQueryAdmin(admin.ModelAdmin):
     list_display = ('query', 'location', 'accuracy', 'id')
     list_filter = ('location', 'accuracy')
     search_fields = ('query', 'location')
-    ordering = ('-id',)
 
 class UserForm(forms.ModelForm):
     class Meta:
