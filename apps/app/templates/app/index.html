@@ -137,18 +137,57 @@
             })
             .then(response => response.json())
             .then(data => {
-                if (data.status === 'success') {
-                    resultDiv.className = 'result success';
-                    resultDiv.innerHTML = `
-                        <h3>Search Submitted Successfully!</h3>
-                        <p><strong>City:</strong> ${data.city}</p>
-                        <p><strong>Query:</strong> ${data.query}</p>
-                        <p>${data.message}</p>
-                        <p><em>Your custom event logic will be executed here...</em></p>
-                    `;
+                console.log('Received data:', data);
+                
+                // Check if data contains search results
+                if (data && typeof data === 'object' && !data.error) {
+                    const searchKey = Object.keys(data)[0];
+                    if (searchKey && data[searchKey]) {
+                        const places = data[searchKey];
+                        const placeCount = Object.keys(places).length;
+                        
+                        resultDiv.className = 'result success';
+                        let resultsHTML = `
+                            <h3>Search Results Found!</h3>
+                            <p><strong>Search:</strong> ${searchKey}</p>
+                            <p><strong>Found:</strong> ${placeCount} places</p>
+                            <div style="max-height: 400px; overflow-y: auto; margin-top: 15px; border: 1px solid #ddd; border-radius: 5px; padding: 10px; background: white;">
+                        `;
+                        
+                        // Display first 20 results
+                        const placeNames = Object.keys(places);
+                        placeNames.forEach(placeName => {
+                            const place = places[placeName];
+                            const displayName = place.displayName?.text || placeName;
+                            const address = place.formattedAddress || 'No address available';
+                            const website = place.websiteUri || '';
+                            const phone = place.nationalPhoneNumber || '';
+                            
+                            resultsHTML += `
+                                <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; border-radius: 5px; background: #f9f9f9;">
+                                    <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">${displayName}</h4>
+                                    <p style="margin: 2px 0; font-size: 14px; color: #666;">${address}</p>
+                                    ${phone ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Phone:</strong> ${phone}</p>` : ''}
+                                    ${website ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Website:</strong> <a href="${website}" target="_blank" style="color: #007bff;">${website}</a></p>` : ''}
+                                </div>
+                            `;
+                        });
+                        
+
+                        
+                        resultsHTML += '</div>';
+                        resultDiv.innerHTML = resultsHTML;
+                    } else {
+                        resultDiv.className = 'result error';
+                        resultDiv.innerHTML = `<h3>No Results</h3><p>No places found for your search.</p>`;
+                    }
+                } else if (data && data.error) {
+                    resultDiv.className = 'result error';
+                    resultDiv.innerHTML = `<h3>Error:</h3><p>${data.error}</p>`;
                 } else {
                     resultDiv.className = 'result error';
-                    resultDiv.innerHTML = `<h3>Error:</h3><p>${data.message || 'Something went wrong'}</p>`;
+                    resultDiv.innerHTML = `<h3>Error</h3><p>Something went wrong. Check console for details.</p>`;
+                    console.error('Invalid data format:', data);
                 }
             })
             .catch(error => {

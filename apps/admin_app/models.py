@@ -17,6 +17,7 @@ class SearchQuery(models.Model):
     accuracy = models.FloatField(default=0.0)
     location = models.CharField(max_length=255)
     query = models.CharField(max_length=255)
+    result = models.JSONField(default=dict)
     company = models.ForeignKey(
         'Company',
         related_name='search_queries',
@@ -37,7 +38,6 @@ class SearchQuery(models.Model):
                 'result': result,
             }
         )
-        search_query.company = Company.save_results(result)
         search_query.save()
         
         user.results.add(search_query)
