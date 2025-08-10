@@ -139,54 +139,49 @@
             .then(data => {
                 console.log('Received data:', data);
                 
-                // Check if data contains search results
-                if (data && typeof data === 'object' && !data.error) {
-                    const searchKey = Object.keys(data)[0];
-                    if (searchKey && data[searchKey]) {
-                        const places = data[searchKey];
-                        const placeCount = Object.keys(places).length;
-                        
-                        resultDiv.className = 'result success';
-                        let resultsHTML = `
-                            <h3>Search Results Found!</h3>
-                            <p><strong>Search:</strong> ${searchKey}</p>
-                            <p><strong>Found:</strong> ${placeCount} places</p>
-                            <div style="max-height: 400px; overflow-y: auto; margin-top: 15px; border: 1px solid #ddd; border-radius: 5px; padding: 10px; background: white;">
-                        `;
-                        
-                        // Display first 20 results
-                        const placeNames = Object.keys(places);
-                        placeNames.forEach(placeName => {
-                            const place = places[placeName];
-                            const displayName = place.displayName?.text || placeName;
-                            const address = place.formattedAddress || 'No address available';
-                            const website = place.websiteUri || '';
-                            const phone = place.nationalPhoneNumber || '';
-                            
+                // Check if data contains company results
+                if (data && data.companies && Array.isArray(data.companies)) {
+                    const companies = data.companies;
+                    const companyCount = data.company_count || companies.length;
+                    
+                    resultDiv.className = 'result success';
+                    let resultsHTML = `
+                        <h3>Search Results Found!</h3>
+                        <p><strong>Search:</strong> ${data.search_query}</p>
+                        <p><strong>Found:</strong> ${companyCount} companies</p>
+                        <div style="max-height: 400px; overflow-y: auto; margin-top: 15px; border: 1px solid #ddd; border-radius: 5px; padding: 10px; background: white;">
+                    `;
+                    
+                    if (companies.length > 0) {
+                        companies.forEach(company => {
                             resultsHTML += `
                                 <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; border-radius: 5px; background: #f9f9f9;">
-                                    <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">${displayName}</h4>
-                                    <p style="margin: 2px 0; font-size: 14px; color: #666;">${address}</p>
-                                    ${phone ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Phone:</strong> ${phone}</p>` : ''}
-                                    ${website ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Website:</strong> <a href="${website}" target="_blank" style="color: #007bff;">${website}</a></p>` : ''}
+                                    <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">${company.name}</h4>
+                                    <p style="margin: 2px 0; font-size: 14px; color: #666;">${company.address}</p>
+                                    ${company.phones ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Phone:</strong> ${company.phones}</p>` : ''}
+                                    ${company.email ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Email:</strong> ${company.email}</p>` : ''}
+                                    ${company.website ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Website:</strong> <a href="${company.website}" target="_blank" style="color: #007bff;">${company.website}</a></p>` : ''}
                                 </div>
                             `;
                         });
-                        
-
-                        
-                        resultsHTML += '</div>';
-                        resultDiv.innerHTML = resultsHTML;
+                    } else {
+                        resultsHTML += '<p style="text-align: center; color: #666;">No companies found in database.</p>';
+                    }
+                    
+                    resultsHTML += '</div>';
+                    resultDiv.innerHTML = resultsHTML;
+                } else if (data && data.error) {
+                    // Handle ValueError ("No results found") from backend
+                    if (data.error === "No results found") {
+                        resultDiv.className = 'result error';
+                        resultDiv.innerHTML = `<h3>No Results</h3><p>No companies found for your search. Try a different city or query.</p>`;
                     } else {
                         resultDiv.className = 'result error';
-                        resultDiv.innerHTML = `<h3>No Results</h3><p>No places found for your search.</p>`;
+                        resultDiv.innerHTML = `<h3>Error:</h3><p>${data.error}</p>`;
                     }
-                } else if (data && data.error) {
-                    resultDiv.className = 'result error';
-                    resultDiv.innerHTML = `<h3>Error:</h3><p>${data.error}</p>`;
                 } else {
                     resultDiv.className = 'result error';
-                    resultDiv.innerHTML = `<h3>Error</h3><p>Something went wrong. Check console for details.</p>`;
+                    resultDiv.innerHTML = `<h3>Error</h3><p>Invalid response format. Check console for details.</p>`;
                     console.error('Invalid data format:', data);
                 }
             })

@@ -1,18 +1,28 @@
 import logging
 import os
 from dotenv import load_dotenv
+from pydantic_settings import BaseSettings
+
+from apps.web.mail_extract import EmailExtractor
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)    
 
-class Config():
-    load_dotenv()  
-    SERAPI_KEY = os.getenv("SERPAPI_KEY")
-    GOOGLE_LOCATION_API_KEY = os.getenv("GOOGLE_LOCATION_API_KEY")
-    POSTGRES_USER = os.getenv("POSTGRES_USER")
-    POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD")
-    POSTGRES_DB = os.getenv("POSTGRES_DB")
-    POSTGRES_HOST = os.getenv("POSTGRES_HOST")
-    POSTGRES_PORT = os.getenv("POSTGRES_PORT")
-    
-    DJANGO_SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+class Config(BaseSettings):
+
+    serpapi_key: str
+    google_location_api_key: str
+    postgres_user: str
+    postgres_password: str
+    postgres_db: str
+    postgres_host: str
+    postgres_port: str
+
+    django_secret_key: str
+
+    class Config:
+        env_file = ".env"
+        case_sensitive = False
+
+config = Config()
+email_extractor = EmailExtractor()

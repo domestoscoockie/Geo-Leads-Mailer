@@ -1,6 +1,6 @@
 import json
 import requests
-from apps.config import Config, logger
+from apps.config import config, logger
 from typing import Self
 import requests
 import json
@@ -42,7 +42,7 @@ class LocationQuery(Query):
         url = "https://maps.googleapis.com/maps/api/geocode/json"
         params = {
             "address": self.location,
-            "key": Config.GOOGLE_LOCATION_API_KEY
+            "key": config.google_location_api_key
         }
         
         response = requests.get(url, params=params)
@@ -97,7 +97,7 @@ class LocationQuery(Query):
 
             headers = {
                 'Content-Type': 'application/json',
-                'X-Goog-Api-Key': Config.GOOGLE_LOCATION_API_KEY,
+                'X-Goog-Api-Key': config.google_location_api_key,
                 'X-Goog-FieldMask': 'places.displayName,places.formattedAddress,places.websiteUri,places.nationalPhoneNumber,places.businessStatus,nextPageToken'
             }
         
