@@ -3,3 +3,6 @@ __pycache__/
 Karol_Grabowski_resume.pdf
 credentials.json
 token.json
+uploads/
+settings/
+static/
