@@ -20,6 +20,10 @@ class Config(BaseSettings):
     postgres_host: str
     postgres_port: str
 
+    credentials_file: str = "settings/credentials.json"
+    token_file: str = "settings/token.json"
+    email_attachments_dir: str = "settings/email_attachments"
+
     rabbitmq_broker_url: str
 
     django_secret_key: str

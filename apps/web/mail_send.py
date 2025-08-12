@@ -5,56 +5,62 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 
+from django.core.files.base import ContentFile
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
-from httpx import __name
-# from apps.config import logger
- 
+from apps.admin_app.models import User
+from apps.config import  config, logger
+import uuid
 
 SCOPES = ["https://mail.google.com/"]
 
 
-TITLE = 'Test Email'
-MSG = 'Hello, this is a test email message.'
-ATTACHMENTS = ''
 
 class MailSend:
-  def __init__(self):
+  def __init__(self, username: str):
+    
+    self.user = User.objects.get(username=username)
     self.creds = None
-    if os.path.exists("token.json"):
-      self.creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+    if self.user.token and self.user.token.name and os.path.exists(self.user.token.path):
+      self.creds = Credentials.from_authorized_user_file(self.user.token.path, SCOPES)
 
     if not self.creds or not self.creds.valid:
       if self.creds and self.creds.expired and self.creds.refresh_token:
         self.creds.refresh(Request())
       else:
         flow = InstalledAppFlow.from_client_secrets_file(
-            "credentials.json", SCOPES
+            self.user.credentials.path, SCOPES
         )
         self.creds = flow.run_local_server(port=0)
+      self._save_token()
 
-      with open("token.json", "w") as token:
-        token.write(self.creds.to_json())
     self.service = build("gmail", "v1", credentials=self.creds)
 
+  def _save_token(self):
+      token_json = self.creds.to_json()
+      old_name = self.user.token.name
+      self.user.token.save(f"token_{uuid.uuid4().hex}.json", ContentFile(token_json), save=True)
+      if old_name and old_name != self.user.token.name:
+        try:
+          old_path = os.path.join(os.path.dirname(self.user.token.path), os.path.basename(old_name))
+          if os.path.exists(old_path):
+            os.remove(old_path)
+        except OSError:
+          logger.warning(f"Failed to remove old token file {old_name}. It may not exist or is in use.")
 
 
   def create_message(self, sender: str, to: str, subject: str, message_text: str, attachments: list = None) -> dict:
-    # Create a multipart message for attachments
     message = MIMEMultipart()
     message['to'] = to
     message['from'] = sender
     message['subject'] = subject
     message['Reply-To'] = sender
 
-    # Attach the plain text message
     part1 = MIMEText(message_text, 'plain')
     message.attach(part1)
 
-    # Attach files if provided
     if attachments:
       for file_path in attachments:
         if not os.path.isfile(file_path):
@@ -70,23 +76,18 @@ class MailSend:
     return {'raw': raw_message}
 
 
+  def send(self, to: str, subject: str, text: str, attachments: list = None, sender_email: str | None = None) -> dict:
 
+    sender_email = sender_email or 'me'
 
-  def send(self, userId: str, title: str, msg: str, attachments: list = None) -> dict:
-    message = self.create_message('karol.grabowski852@gmail.com', userId, title, msg, attachments)
+    message = self.create_message(sender_email, to, subject, text, attachments)
 
+    # Gmail API expects userId='me' for the authenticated user account
     self.service.users().messages().send(
       userId='me',
       body=message
     ).execute()
-      
-    # logger.info("Email sent successfully.")
 
-    return {
-      "status": "200",
-      "message": "Email sent successfully."
-    }
+    return {"status": "200", "message": "Email sent successfully."}
 
-if __name__ == "__main__":
-    mailer = MailSend()
-    mailer.send('test-04opmpx8b@srv1.mail-tester.com', TITLE, MSG),
+

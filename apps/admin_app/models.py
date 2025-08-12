@@ -1,15 +1,31 @@
+from importlib.resources import files
+from django.conf import settings
 from django.db import models
 from apps.web.mail_extract import EmailExtractor
 from rest_framework import serializers
+from pathlib import Path
+import uuid
+from django.core.exceptions import ValidationError
+
+def save_file(instance, filename: str) -> str:
+    path = Path(filename)
+    if path.suffix.lower() != '.json':
+        raise ValidationError("Only JSON files are allowed (.json)")
+    unique_dir = uuid.uuid4().hex
+    return f"uploads/{unique_dir}/{path.name}"
 
 class User(models.Model):
     username = models.CharField(max_length=150, unique=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
+    language = models.CharField(max_length=8, default='pl')
+    country = models.CharField(max_length=8, default='PL')
     results = models.ManyToManyField(
         'SearchQuery',
         related_name='user_queries',
         blank=True)
+    credentials = models.FileField(upload_to=save_file, blank=True, null=True)
+    token = models.FileField(upload_to=save_file, blank=True, null=True)
 
     def __str__(self):
         return self.username
@@ -40,7 +56,6 @@ class SearchQuery(models.Model):
         if created or user not in search_query.user.all():
             search_query.user.add(user)
         
-        # Save companies and add them to this search query
         Company.save_results(result, search_query)
         
         user.results.add(search_query)
@@ -50,7 +65,6 @@ class SearchQuery(models.Model):
 
     def __str__(self):
         return f"{self.query}-{self.location}"
-
 
 
 class Company(models.Model):

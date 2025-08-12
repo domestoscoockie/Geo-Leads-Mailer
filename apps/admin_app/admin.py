@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 from django.db import models
 from .models import User, SearchQuery, Company
+from django.contrib.auth.hashers import make_password, identify_hasher
 from django.utils.translation import gettext_lazy as _
 
 class SearchQueryForm(forms.ModelForm):
@@ -28,23 +29,38 @@ class SearchQueryAdmin(admin.ModelAdmin):
 class UserForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'results',]
+        fields = (
+            'username', 'email', 'password', 'language', 'country',
+            'results', 'credentials'
+        )
         widgets = {
             'password': forms.PasswordInput(),
             'results': forms.CheckboxSelectMultiple(),
+            'credentials': forms.FileInput(),
         }
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     form = UserForm
-    list_display = ('username', 'email', 'results_count', )
+    list_display = ('username', 'email', 'language', 'country', 'results_count', 'has_credentials')
     search_fields = ('username', 'email')
     filter_horizontal = ('results',)
     
     def results_count(self, obj):
         return obj.results.count()
 
-    
+    def save_model(self, request, obj, form, change):
+        pwd = form.cleaned_data.get('password')
+        if pwd:
+            try:
+                identify_hasher(pwd)
+            except Exception:
+                obj.password = make_password(pwd)
+        super().save_model(request, obj, form, change)
+
+    def has_credentials(self, obj):
+        return True if obj.credentials else False
+
 
 @admin.register(Company)
 class CompanyAdmin(admin.ModelAdmin):

@@ -1,21 +1,53 @@
+from asyncio.log import logger
 from celery import shared_task
 from typing import Optional, List
+from pathlib import Path
+from apps.web.mail_send import MailSend
+from pathlib import Path
+import os
 
 
-from apps.web.mail_send import MailSend 
+from apps.admin_app.models import User
+
+@shared_task(bind=True)
+def send_email_task(self, user_id: int, to: str, subject: str, text: str, attachments: Optional[List[str]] = None, sender_email: str | None = None):
+    user = User.objects.get(id=user_id)
+    mailer = MailSend(user)
+    mailer.send(to, subject, text, attachments, sender_email=sender_email)
+    return {"to": to, "status": "queued", "sender": sender_email}
+
+@shared_task(bind=True)
+def cleanup_attachments(self, attachment_paths: List[str]):
+    if not attachment_paths:
+        return {"removed": 0}
+    try:
+        parent = Path(attachment_paths[0]).parent
+    except Exception:
+        return {"removed": 0}
+    removed = 0
+    for fp in attachment_paths:
+        p = Path(fp)
+        if p.is_file():
+            try:
+                p.unlink()
+                removed += 1
+            except OSError:
+                logger.warning(f"Failed to remove file {p}. It may not exist.")
+    try:
+        parent.rmdir()
+    except OSError:
+        logger.warning(f"Failed to remove directory {parent}. It may not be empty or does not exist.")
+    return {"removed": removed}
 
 
 @shared_task(bind=True)
-def send_email_task(self, to: str, subject: str, text: str, attachments: Optional[List[str]] = None):
-
-    mailer = MailSend()
-    # MailSend.send expects first arg to be the recipient email (despite the name userId)
-    mailer.send(to, subject, text, attachments)
-    return {"to": to, "status": "queued"}
-
-@shared_task(bind=True)
-def send_bulk_emails(self, payloads: list, delay_s: int = 5):
-
+def send_bulk_emails(self, payloads: list, user_id: int, delay_s: int = 5):
+    if not payloads:
+        return {"count": 0}
     for i, p in enumerate(payloads):
-        send_email_task.apply_async(kwargs=p, countdown=i * delay_s)
+        send_email_task.apply_async(kwargs={"user_id": user_id, **p}, countdown=i * delay_s)
+    attachment_paths = payloads[0].get('attachments') if isinstance(payloads[0], dict) else []
+    if attachment_paths:
+        total_delay = (len(payloads) - 1) * delay_s + 30
+        cleanup_attachments.apply_async(args=[attachment_paths], countdown=total_delay)
     return {"count": len(payloads)}

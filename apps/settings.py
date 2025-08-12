@@ -127,22 +127,14 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# Celery configuration (RabbitMQ broker)
 CELERY_BROKER_URL = config.rabbitmq_broker_url
-# Use a supported backend; do not point to AMQP broker URL here
-CELERY_RESULT_BACKEND = "rpc://"  # stores results in RabbitMQ via RPC backend
-# Enable storing results
+CELERY_RESULT_BACKEND = "rpc://"  
 CELERY_IGNORE_RESULT = False
 CELERY_TASK_IGNORE_RESULT = False
-# Optional: auto-expire result metadata (in seconds)
 CELERY_RESULT_EXPIRES = 3600
-# Optional: mark tasks as STARTED when the worker picks them up
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_ALWAYS_EAGER = False
 CELERY_TASK_DEFAULT_QUEUE = "email.send"
-CELERY_TASK_ANNOTATIONS = {
-    "*": {"rate_limit": "1/m"},  # globalny przyklad (mozna usunac)
-}
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"

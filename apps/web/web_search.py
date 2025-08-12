@@ -56,7 +56,7 @@ class LocationQuery(Query):
             }
         return None
 
-    def generate_rectangles(self, step_minutes=2.0) -> list[Rect]:
+    def generate_rectangles(self, step_minutes=10.0) -> list[Rect]:
 
         bounds = self.geometry()
         if not bounds:

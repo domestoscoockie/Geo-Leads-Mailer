@@ -1,37 +1,79 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="en" class="h-full">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>{% block title %}Email Bot{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { sans: ['Inter','ui-sans-serif','system-ui'] }, colors: { brand:{50:'#eef4ff',100:'#d9e7ff',200:'#b3d1ff',300:'#85b6ff',400:'#5696ff',500:'#2d72fe',600:'#1554db',700:'#0f41ab',800:'#0d398d',900:'#0e326f'} }, boxShadow:{soft:'0 1px 2px 0 rgba(0,0,0,0.04),0 2px 4px -1px rgba(0,0,0,0.06)'} } }, darkMode:'class'
+    }
+  </script>
   {% block head %}{% endblock %}
-  <style>
-    body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  </style>
   {% load static %}
+  <style>
+    body{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+    .gradient-bg{background:radial-gradient(circle at 30% 20%,rgba(59,130,246,.15),transparent 60%),radial-gradient(circle at 80% 70%,rgba(16,185,129,.12),transparent 65%),linear-gradient(180deg,#f8fafc,#eef2f7 55%,#e2e8f0)}
+    .dark .gradient-bg{background:radial-gradient(circle at 25% 15%,rgba(59,130,246,.25),transparent 55%),radial-gradient(circle at 80% 70%,rgba(16,185,129,.25),transparent 60%),linear-gradient(180deg,#0f172a,#1e293b 60%,#334155)}
+    .nav-link.active:after{content:'';position:absolute;left:0;right:0;bottom:-6px;height:2px;background:linear-gradient(90deg,#2d72fe,#0ea5e9);border-radius:2px}
+  </style>
+  <script>
+    const setTheme=m=>{const r=document.documentElement; if(m==='dark'){r.classList.add('dark');localStorage.theme='dark'}else{r.classList.remove('dark');localStorage.theme='light'}};
+    (()=>{const pref=localStorage.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');setTheme(pref)})();
+  </script>
 </head>
-<body class="min-h-screen bg-slate-50 text-slate-900">
-  <header class="border-b border-slate-200 bg-white sticky top-0 z-10">
-    <div class="mx-auto max-w-6xl px-4 py-4 flex items-center justify-between">
-      <a href="/" class="text-xl font-semibold text-slate-800">Email Bot</a>
-      <nav class="flex gap-4">
-        <a class="text-slate-600 hover:text-slate-900" href="/">Szukaj</a>
-        <a class="text-slate-600 hover:text-slate-900" href="/send_email">Wyślij email</a>
+<body class="h-full flex flex-col gradient-bg text-slate-800 dark:text-slate-100 transition-colors">
+  <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-brand-600 text-white px-3 py-2 rounded-md">Skip to content</a>
+  <header class="sticky top-0 z-30 border-b border-slate-200/70 dark:border-slate-700/60 backdrop-blur bg-white/80 dark:bg-slate-900/70">
+    <div class="mx-auto max-w-7xl px-4 lg:px-6 h-16 flex items-center gap-8">
+      <a href="/" class="flex items-center gap-2 group">
+        <div class="h-9 w-9 rounded-lg bg-gradient-to-br from-brand-500 to-brand-700 text-white flex items-center justify-center font-semibold shadow-soft group-hover:scale-105 transition-transform">EB</div>
+        <span class="text-lg font-semibold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-sky-500">Email Bot</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+        <a href="/" class="nav-link relative text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Search</a>
+        <a href="/send_email" class="nav-link relative text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">Send email</a>
       </nav>
+      <div class="ml-auto flex items-center gap-3">
+        {% if request.session.uid %}
+          <a href="/logout" class="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">Logout</a>
+        {% else %}
+          <a href="/login" class="text-xs font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">Login</a>
+          <a href="/register" class="text-xs font-medium text-brand-600 dark:text-sky-400 hover:underline">Register</a>
+        {% endif %}
+        <button id="themeToggle" class="rounded-md border border-slate-300 dark:border-slate-600 px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition">Theme</button>
+      </div>
     </div>
   </header>
-
-  <main class="mx-auto max-w-6xl px-4 py-8">
-    {% block content %}{% endblock %}
+  <main id="main" class="flex-1 w-full">
+    <div class="mx-auto max-w-7xl px-4 lg:px-6 py-10 lg:py-14">
+      {% block content %}{% endblock %}
+    </div>
   </main>
-
-  <footer class="border-t border-slate-200 bg-white">
-    <div class="mx-auto max-w-6xl px-4 py-6 text-sm text-slate-500">
-      © 2025 Email Bot
+  <footer class="mt-8 border-t border-slate-200/70 dark:border-slate-700/60">
+    <div class="mx-auto max-w-7xl px-4 lg:px-6 py-8 text-sm flex flex-col sm:flex-row gap-4 sm:items-center justify-between text-slate-500 dark:text-slate-400">
+      <p>© 2025 Email Bot. All rights reserved.</p>
+      <div class="flex gap-5">
+        <a href="#" class="hover:text-slate-700 dark:hover:text-slate-200">Privacy</a>
+        <a href="#" class="hover:text-slate-700 dark:hover:text-slate-200">Terms</a>
+        <a href="mailto:contact@example.com" class="hover:text-slate-700 dark:hover:text-slate-200">Contact</a>
+      </div>
     </div>
   </footer>
-
+  <div id="toastHost" class="fixed inset-0 pointer-events-none flex flex-col items-end gap-2 p-4 z-50"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', ()=>{
+      const path=location.pathname.replace(/\/$/,'');
+      document.querySelectorAll('nav a.nav-link').forEach(a=>{if(a.getAttribute('href').replace(/\/$/,'')===path){a.classList.add('active','text-slate-900','dark:text-white');}});
+      document.getElementById('themeToggle')?.addEventListener('click',()=>{const dark=document.documentElement.classList.contains('dark');setTheme(dark?'light':'dark');});
+    });
+    function pushToast(msg,type='info',ttl=4200){const host=document.getElementById('toastHost');if(!host)return;const colors={info:'bg-slate-800 text-white',success:'bg-emerald-600 text-white',error:'bg-rose-600 text-white',warn:'bg-amber-500 text-slate-900'};const el=document.createElement('div');el.className=`pointer-events-auto shadow-soft rounded-md px-4 py-3 text-sm font-medium flex items-start gap-3 w-full sm:w-auto max-w-sm ${colors[type]||colors.info}`;el.innerHTML=`<span class='flex-1 leading-snug'>${msg}</span><button class='shrink-0 opacity-70 hover:opacity-100 transition' aria-label='Close'>&times;</button>`;const close=()=>{el.classList.add('animate-fade-out');setTimeout(()=>el.remove(),280);};el.querySelector('button').addEventListener('click',close);host.appendChild(el);setTimeout(close,ttl)}
+  </script>
+  <style>@keyframes fade-in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}@keyframes fade-out{from{opacity:1;transform:translateY(0)}to{opacity:0;transform:translateY(-4px)}}#toastHost>div{animation:fade-in .3s ease}.animate-fade-out{animation:fade-out .28s ease forwards}</style>
   {% block scripts %}{% endblock %}
 </body>
 </html>
