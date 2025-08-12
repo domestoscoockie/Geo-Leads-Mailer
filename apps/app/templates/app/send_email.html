@@ -1,75 +1,191 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Email</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
-        .container { max-width: 700px; margin: 40px auto; background: #fff; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 30px; }
-        h1 { text-align: center; color: #333; }
-        .form-group { margin-bottom: 20px; }
-        label { display: block; margin-bottom: 6px; font-weight: bold; color: #555; }
-        input[type="text"], input[type="email"], select, textarea { width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px; }
-        textarea { min-height: 120px; }
-        input[type="file"] { border: none; }
-        .submit-btn { background: #007bff; color: #fff; border: none; border-radius: 5px; padding: 12px 30px; font-size: 16px; cursor: pointer; width: 100%; margin-top: 10px; }
-        .submit-btn:hover { background: #0056b3; }
-    </style>
-</head>
-<body>
-<div class="container">
-    <h1>Send Email</h1>
-    <form id="sendEmailForm" method="post" enctype="multipart/form-data">
+{% extends 'app/base.html' %}
+
+{% block title %}Wyślij email — Email Bot{% endblock %}
+
+{% block content %}
+<div class="bg-white border border-slate-200 shadow-sm rounded-xl p-6">
+    <h1 class="text-2xl font-semibold text-slate-800 mb-6">Wyślij email</h1>
+
+    <form id="sendEmailForm" method="post" enctype="multipart/form-data" class="space-y-5">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="location">Location:</label>
-            <select id="location" name="location">
-                <option value="">-- Select Location --</option>
-                {% for loc in locations %}
-                    <option value="{{ loc }}">{{ loc }}</option>
-                {% endfor %}
-            </select>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="location" class="block text-sm font-medium text-slate-700 mb-1">Lokalizacja</label>
+                <select id="location" name="location" class="w-full rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500">
+                    <option value="">— Wybierz lokalizację —</option>
+                    {% for loc in locations %}
+                        <option value="{{ loc }}">{{ loc }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                    <div class="flex items-center justify-between mb-1">
+                        <label for="query" class="block text-sm font-medium text-slate-700">Frazy (możesz wybrać wiele)</label>
+                        <button type="button" id="selectAllQueries" class="text-xs px-2 py-1 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100">Wybierz wszystko</button>
+                    </div>
+                <select id="query" name="query" multiple size="6" class="w-full rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500"></select>
+                <p class="mt-1 text-xs text-slate-500">Wybierz jedną lub więcej fraz.</p>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="query">Query:</label>
-            <select id="query" name="query">
-                <option value="">-- Select Query --</option>
-                {% for q in queries %}
-                    <option value="{{ q }}">{{ q }}</option>
-                {% endfor %}
-            </select>
+
+        <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label for="reciver" class="block text-sm font-medium text-slate-700">Firmy (z wybranych fraz)</label>
+                    <button type="button" id="selectAllCompanies" class="text-xs px-2 py-1 rounded-md border border-slate-300 text-slate-700 hover:bg-slate-100">Wybierz wszystko</button>
+                </div>
+            <select id="reciver" name="reciver" multiple size="10" class="w-full rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500"></select>
+            <p class="mt-1 text-xs text-slate-500">Możesz wybrać wiele firm (Ctrl / Cmd).</p>
         </div>
-        <div class="form-group">
-            <label for="reciver">Receiver (Company):</label>
-            <select id="reciver" name="reciver" multiple>
-                {% for company in companies %}
-                    <option value="{{ company.id }}">{{ company.name }} ({{ company.email }})</option>
-                {% endfor %}
-            </select>
-            <small>Możesz wybrać wiele firm (przytrzymaj Ctrl).</small>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="sender" class="block text-sm font-medium text-slate-700 mb-1">Twój email (nadawca)</label>
+                <input id="sender" name="sender" type="email" required class="w-full rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" />
+            </div>
+            <div>
+                <label for="subject" class="block text-sm font-medium text-slate-700 mb-1">Temat</label>
+                <input id="subject" name="subject" type="text" required class="w-full rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" />
+            </div>
         </div>
-        <div class="form-group">
-            <label for="sender">Sender (Twój email):</label>
-            <input type="email" id="sender" name="sender" required>
+
+        <div>
+            <label for="text" class="block text-sm font-medium text-slate-700 mb-1">Wiadomość</label>
+            <textarea id="text" name="text" required class="w-full min-h-40 rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500"></textarea>
         </div>
-        <div class="form-group">
-            <label for="subject">Subject:</label>
-            <input type="text" id="subject" name="subject" required>
+
+        <div>
+            <label for="attachments" class="block text-sm font-medium text-slate-700 mb-1">Załączniki</label>
+            <input id="attachments" name="attachments" type="file" multiple class="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
         </div>
-        <div class="form-group">
-            <label for="text">Message:</label>
-            <textarea id="text" name="text" required></textarea>
+
+        <div class="flex items-center gap-3">
+            <label for="delay_min" class="text-sm text-slate-700">Opóźnienie (minuty)</label>
+            <input id="delay_min" name="delay_min" type="number" min="0" value="1" class="w-24 rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" />
         </div>
-        <div class="form-group">
-            <label for="attachments">Attachments:</label>
-            <input type="file" id="attachments" name="attachments" multiple>
-        </div>
-        <button type="submit" class="submit-btn">Send</button>
+
+        <button type="submit"
+                        class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Wyślij
+        </button>
     </form>
 </div>
+{% endblock %}
+
+{% block scripts %}
 <script>
-// Opcjonalnie: dynamiczne filtrowanie firm po location/query przez AJAX
+    const locationSelect = document.getElementById('location');
+    const querySelect = document.getElementById('query');
+    const companySelect = document.getElementById('reciver');
+        const selectAllQueriesBtn = document.getElementById('selectAllQueries');
+        const selectAllCompaniesBtn = document.getElementById('selectAllCompanies');
+
+    function clearSelect(el, placeholder) {
+        el.innerHTML = '';
+        if (placeholder) {
+            const opt = document.createElement('option');
+            opt.disabled = true; opt.selected = true; opt.hidden = true; opt.textContent = placeholder;
+            el.appendChild(opt);
+        }
+    }
+
+    function getSelectedValues(el) {
+        return Array.from(el.selectedOptions).map(o => o.value);
+    }
+
+        function extractEmails(raw) {
+            if (!raw || typeof raw !== 'string') return [];
+            // Attempt to parse list-like strings: "['a@b.com','image.png']"
+            let candidates = [];
+            const trimmed = raw.trim();
+            if ((trimmed.startsWith('[') && trimmed.endsWith(']')) || trimmed.includes(',')) {
+                try {
+                    const arr = Function('return ' + trimmed)();
+                    if (Array.isArray(arr)) candidates = arr.filter(x => typeof x === 'string');
+                } catch (_) {
+                    candidates = [raw];
+                }
+            } else {
+                candidates = [raw];
+            }
+            const emailRe = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/ig;
+            const badExt = /\.(png|jpg|jpeg|svg|gif|webp)$/i;
+            const out = new Set();
+            for (const c of candidates) {
+                if (!c || badExt.test(c)) continue;
+                const found = c.match(emailRe) || [];
+                for (const e of found) out.add(e.toLowerCase());
+            }
+            return Array.from(out);
+        }
+
+    // 1) Po zmianie lokalizacji, wczytaj frazy
+    locationSelect.addEventListener('change', async () => {
+        clearSelect(querySelect);
+        clearSelect(companySelect);
+        const loc = locationSelect.value;
+        if (!loc) return;
+        const resp = await fetch(`/get_queries_for_location?location=${encodeURIComponent(loc)}`);
+        const data = await resp.json();
+        (data.queries || []).forEach(q => {
+            const opt = document.createElement('option');
+            opt.value = q; opt.textContent = q;
+            querySelect.appendChild(opt);
+        });
+    });
+
+        // 2) Przy każdej zmianie wyboru fraz, zbierz firmy z wielu fraz i scal bez duplikatów
+    querySelect.addEventListener('change', async () => {
+        clearSelect(companySelect);
+        const loc = locationSelect.value;
+        const queries = getSelectedValues(querySelect);
+        if (!loc || queries.length === 0) return;
+
+            const seen = new Set(); // emails dedup
+        for (const q of queries) {
+            const resp = await fetch(`/get_companies_for_location_query?location=${encodeURIComponent(loc)}&query=${encodeURIComponent(q)}`);
+            const data = await resp.json();
+                (data.companies || []).forEach(c => {
+                    const emails = extractEmails(c.email);
+                    emails.forEach(em => {
+                        if (!seen.has(em)) seen.add(em);
+                    });
+                });
+        }
+
+            Array.from(seen).forEach(em => {
+                const opt = document.createElement('option');
+                opt.value = em; opt.textContent = em;
+                companySelect.appendChild(opt);
+            });
+    });
+
+        // 2a) Wybierz wszystkie frazy i odśwież listę firm (przypnij raz)
+        selectAllQueriesBtn.addEventListener('click', () => {
+            Array.from(querySelect.options).forEach(o => o.selected = true);
+            querySelect.dispatchEvent(new Event('change'));
+        });
+
+        // 2b) Wybierz wszystkie firmy (przypnij raz)
+        selectAllCompaniesBtn.addEventListener('click', () => {
+            Array.from(companySelect.options).forEach(o => o.selected = true);
+        });
+
+    // 3) Submit — wyślij wybrane firmy jako recipients[] w POST (multipart/form-data)
+    document.getElementById('sendEmailForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        const recipients = Array.from(companySelect.selectedOptions).map(o => o.value);
+        const fd = new FormData(form);
+        fd.delete('reciver');
+        recipients.forEach(r => fd.append('recipients[]', r));
+
+        fetch('/send_email', {
+            method: 'POST',
+            body: fd
+        }).then(r => r.json()).then(data => {
+            alert(`Zakolejkowano: ${data.queued}, opóźnienie: ${data.delay_min} min`);
+        }).catch(err => alert('Błąd: ' + err.message));
+    });
 </script>
-</body>
-</html>
+{% endblock %}

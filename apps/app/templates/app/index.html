@@ -1,195 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Bot - Search Form</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        
-        .container {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        h1 {
-            color: #333;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            color: #555;
-        }
-        
-        input[type="text"] {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-        }
-        
-        input[type="text"]:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-        
-        .submit-btn {
-            background-color: #007bff;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 10px;
-        }
-        
-        .submit-btn:hover {
-            background-color: #0056b3;
-        }
-        
-        .result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            display: none;
-        }
-        
-        .result.success {
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            color: #155724;
-        }
-        
-        .result.error {
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            color: #721c24;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Email Bot - Company Search</h1>
-        
-        <form id="searchForm" method="post">
-            {% csrf_token %}
-            
-            <div class="form-group">
-                <label for="city">City:</label>
-                <input type="text" id="city" name="city" placeholder="Enter city name (e.g., Lublin)" required>
-            </div>
-            
-            <div class="form-group">
-                <label for="query">Query:</label>
-                <input type="text" id="query" name="query" placeholder="Enter search query (e.g., software company)" required>
-            </div>
-            
-            <button type="submit" class="submit-btn">Search Companies</button>
-        </form>
-        
-        <div id="result" class="result"></div>
-    </div>
+{% extends 'app/base.html' %}
 
-    <script>
-        document.getElementById('searchForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const city = document.getElementById('city').value;
-            const query = document.getElementById('query').value;
-            const resultDiv = document.getElementById('result');
-            
-            // Show loading state
-            resultDiv.style.display = 'block';
-            resultDiv.className = 'result';
-            resultDiv.innerHTML = 'Searching...';
-            
-            // Get CSRF token
-            const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-            
-            // Send AJAX request
-            fetch('', {
+{% block title %}Szukaj firm — Email Bot{% endblock %}
+
+{% block content %}
+<div class="bg-white border border-slate-200 shadow-sm rounded-xl p-6">
+    <h1 class="text-2xl font-semibold text-slate-800 mb-6">Wyszukaj firmy</h1>
+
+    <form id="searchForm" method="post" class="space-y-5">
+        {% csrf_token %}
+
+        <div>
+            <label for="city" class="block text-sm font-medium text-slate-700 mb-1">Miasto</label>
+            <input id="city" name="city" type="text" required placeholder="np. Lublin"
+                         class="w-full rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" />
+        </div>
+
+        <div>
+            <label for="query" class="block text-sm font-medium text-slate-700 mb-1">Fraza</label>
+            <input id="query" name="query" type="text" required placeholder="np. cukiernie"
+                         class="w-full rounded-md border-slate-300 focus:border-indigo-500 focus:ring-indigo-500" />
+        </div>
+
+        <button type="submit"
+                        class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-white font-medium hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+            Szukaj firm
+        </button>
+    </form>
+
+    <div id="result" class="mt-6 hidden"></div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const form = document.getElementById('searchForm');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const city = document.getElementById('city').value;
+        const query = document.getElementById('query').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        resultDiv.className = 'mt-6 p-4 rounded-md bg-slate-50 border border-slate-200 text-slate-700';
+        resultDiv.classList.remove('hidden');
+        resultDiv.textContent = 'Szukam...';
+
+        try {
+            const resp = await fetch('', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'X-CSRFToken': csrfToken
                 },
                 body: `city=${encodeURIComponent(city)}&query=${encodeURIComponent(query)}`
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Received data:', data);
-                
-                // Check if data contains company results
-                if (data && data.companies && Array.isArray(data.companies)) {
-                    const companies = data.companies;
-                    const companyCount = data.company_count || companies.length;
-                    
-                    resultDiv.className = 'result success';
-                    let resultsHTML = `
-                        <h3>Search Results Found!</h3>
-                        <p><strong>Search:</strong> ${data.search_query}</p>
-                        <p><strong>Found:</strong> ${companyCount} companies</p>
-                        <div style="max-height: 400px; overflow-y: auto; margin-top: 15px; border: 1px solid #ddd; border-radius: 5px; padding: 10px; background: white;">
-                    `;
-                    
-                    if (companies.length > 0) {
-                        companies.forEach(company => {
-                            resultsHTML += `
-                                <div style="border: 1px solid #ddd; padding: 10px; margin: 5px 0; border-radius: 5px; background: #f9f9f9;">
-                                    <h4 style="margin: 0 0 5px 0; color: #333; font-size: 16px;">${company.name}</h4>
-                                    <p style="margin: 2px 0; font-size: 14px; color: #666;">${company.address}</p>
-                                    ${company.phones ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Phone:</strong> ${company.phones}</p>` : ''}
-                                    ${company.email ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Email:</strong> ${company.email}</p>` : ''}
-                                    ${company.website ? `<p style="margin: 2px 0; font-size: 14px;"><strong>Website:</strong> <a href="${company.website}" target="_blank" style="color: #007bff;">${company.website}</a></p>` : ''}
-                                </div>
-                            `;
-                        });
-                    } else {
-                        resultsHTML += '<p style="text-align: center; color: #666;">No companies found in database.</p>';
-                    }
-                    
-                    resultsHTML += '</div>';
-                    resultDiv.innerHTML = resultsHTML;
-                } else if (data && data.error) {
-                    // Handle ValueError ("No results found") from backend
-                    if (data.error === "No results found") {
-                        resultDiv.className = 'result error';
-                        resultDiv.innerHTML = `<h3>No Results</h3><p>No companies found for your search. Try a different city or query.</p>`;
-                    } else {
-                        resultDiv.className = 'result error';
-                        resultDiv.innerHTML = `<h3>Error:</h3><p>${data.error}</p>`;
-                    }
-                } else {
-                    resultDiv.className = 'result error';
-                    resultDiv.innerHTML = `<h3>Error</h3><p>Invalid response format. Check console for details.</p>`;
-                    console.error('Invalid data format:', data);
-                }
-            })
-            .catch(error => {
-                resultDiv.className = 'result error';
-                resultDiv.innerHTML = `<h3>Error:</h3><p>Network error: ${error.message}</p>`;
             });
-        });
-    </script>
-</body>
-</html>
+            const data = await resp.json();
+
+            if (data && Array.isArray(data.companies)) {
+                const companies = data.companies;
+                const companyCount = data.company_count || companies.length;
+                const items = companies.map(c => `
+                    <li class="border border-slate-200 rounded-md p-3">
+                        <div class="font-medium text-slate-800">${c.name}</div>
+                        ${c.address ? `<div class="text-slate-600 text-sm">${c.address}</div>` : ''}
+                        <div class="text-slate-600 text-sm space-x-3">
+                            ${c.phones ? `<span>Tel: ${c.phones}</span>` : ''}
+                            ${c.email ? `<span>Email: ${c.email}</span>` : ''}
+                            ${c.website ? `<a class="text-indigo-600 hover:underline" target="_blank" href="${c.website}">${c.website}</a>` : ''}
+                        </div>
+                    </li>`).join('');
+                resultDiv.innerHTML = `
+                    <div class="mb-3 text-slate-800 font-medium">Wyniki dla: <span class="text-slate-600">${data.search_query || ''}</span></div>
+                    <div class="mb-4 text-sm text-slate-600">Znaleziono: <strong>${companyCount}</strong> firm</div>
+                    <ul class="space-y-2 max-h-96 overflow-auto">${items || '<li class="text-slate-600">Brak firm</li>'}</ul>`;
+            } else if (data && data.error) {
+                resultDiv.className = 'mt-6 p-4 rounded-md bg-rose-50 border border-rose-200 text-rose-800';
+                resultDiv.innerHTML = `<strong>Błąd:</strong> ${data.error}`;
+            } else {
+                resultDiv.className = 'mt-6 p-4 rounded-md bg-rose-50 border border-rose-200 text-rose-800';
+                resultDiv.textContent = 'Nieprawidłowa odpowiedź z serwera.';
+            }
+        } catch (err) {
+            resultDiv.className = 'mt-6 p-4 rounded-md bg-rose-50 border border-rose-200 text-rose-800';
+            resultDiv.textContent = `Błąd sieci: ${err.message}`;
+        }
+    });
+</script>
+{% endblock %}

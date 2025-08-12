@@ -10,7 +10,8 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
-from apps.config import logger
+from httpx import __name
+# from apps.config import logger
  
 
 SCOPES = ["https://mail.google.com/"]
@@ -75,14 +76,17 @@ class MailSend:
     message = self.create_message('karol.grabowski852@gmail.com', userId, title, msg, attachments)
 
     self.service.users().messages().send(
-      userId=userId,
+      userId='me',
       body=message
     ).execute()
       
-    logger.info("Email sent successfully.")
+    # logger.info("Email sent successfully.")
 
     return {
       "status": "200",
       "message": "Email sent successfully."
     }
 
+if __name__ == "__main__":
+    mailer = MailSend()
+    mailer.send('test-04opmpx8b@srv1.mail-tester.com', TITLE, MSG),
