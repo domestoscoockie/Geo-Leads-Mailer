@@ -1,10 +1,10 @@
+from django.http import JsonResponse
 from apps.admin_app.models import SearchQuery, Company, User,\
     CompanySerializer
 from apps.web.web_search import LocationQuery
 from apps.config import logger, config
 import os
 import uuid
-from apps.web.email_crawler import email_crawler
 
 
 def save_files(upload_files: list) -> list[str]:
@@ -31,7 +31,6 @@ def google_search(city: str, query: str, grid_size_km: float, user: 'User') -> S
     location_search = LocationQuery(location=city, language=user.language, country=user.country).set_query(query)
     rectangles = location_search.generate_rectangles(step_minutes=step_minutes)
     result = location_search.search(rectangles)
-
     search_query = SearchQuery.save_result(
         user=user,
         location=city,
@@ -42,10 +41,20 @@ def google_search(city: str, query: str, grid_size_km: float, user: 'User') -> S
     return search_query
 
 
-def extract_companies(search_query: SearchQuery) -> dict:
-    for company in search_query.companies.all():
-        if not company.email:
-            company.save_mail(email_crawler)
+def extract_companies(search_query: SearchQuery, grid_size_km: float) -> dict:
+    if not search_query.companies\
+        .exclude(email__isnull=True)\
+        .exclude(email='')\
+        .exists() or search_query.accuracy > grid_size_km:
+        logger.info(f"Updating accuracy for search query: {search_query.accuracy} -> {grid_size_km}")
+        search_query.accuracy = grid_size_km
+        search_query.save()
+        search_query.refresh_from_db()
+        logger.info(f"Updated search query accuracy: {search_query.accuracy}")
+        for company in search_query.companies.all():
+            if not company.email:
+                company.save_mail()
+        
     return {
         'search_query': f"{search_query.location}-{search_query.query}",
         'company_count': search_query.companies.count(),

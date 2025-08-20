@@ -41,14 +41,13 @@ def index(request):
             grid_size_km = form.cleaned_data['grid_size']
             try:
                 search_query = SearchQuery.objects.get(location=city, query=query)
-                logger.info(f"Found existing search query: {search_query.location} - {search_query.query}")
-            except SearchQuery.DoesNotExist:
-                try:
+                if search_query.accuracy > grid_size_km:
                     search_query = google_search(city, query, grid_size_km, user=user)
-                    logger.info(f"Created new search query: {search_query.location} - {search_query.query}")
-                except ValueError:
-                    return JsonResponse({"error": "No results found"}, status=404)
-            return JsonResponse(extract_companies(search_query))
+            except SearchQuery.DoesNotExist:
+                search_query = google_search(city, query, grid_size_km, user=user)
+            except ValueError:
+                return JsonResponse({"error": "No results found"}, status=404)
+            return JsonResponse(extract_companies(search_query, grid_size_km), status=200)
         else:
             return JsonResponse({'error': 'Invalid input', 'details': form.errors}, status=400)
     return render(request, 'app/index.html', {'current_user': user})

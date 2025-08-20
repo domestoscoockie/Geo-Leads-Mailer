@@ -1,2 +1,2 @@
-from .celery import celery_app as celery_app 
+from .celery import celery_rabbit as celery_rabbit 
 

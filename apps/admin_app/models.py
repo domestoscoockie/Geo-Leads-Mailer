@@ -1,12 +1,9 @@
-from django.conf import settings
 from django.db import models
-from apps.web.email_crawler import EmailCrawler
 from rest_framework import serializers
 from pathlib import Path
 import uuid
 from django.core.exceptions import ValidationError
 from apps.config import logger
-
 
 def save_file(instance, filename: str) -> str:
     path = Path(filename)
@@ -36,7 +33,7 @@ class User(models.Model):
 
 class SearchQuery(models.Model):
     user = models.ManyToManyField(User, related_name='search_queries')
-    accuracy = models.FloatField(default=0.0)  # Grid size in km (e.g., 10 = 10x10 km squares)
+    accuracy = models.FloatField(null=True, blank=True) 
     location = models.CharField(max_length=255)
     query = models.CharField(max_length=255)
     result = models.JSONField(default=dict)
@@ -53,13 +50,12 @@ class SearchQuery(models.Model):
                 location=location,
                 query=query,
                 defaults={
-                    'accuracy': accuracy,
                     'result': result
                 }
             )
             if created or user not in search_query.user.all():
                 search_query.user.add(user)
-            
+
             Company.save_results(result, search_query)
             
             user.results.add(search_query)
@@ -97,20 +93,22 @@ class Company(models.Model):
                 name=display_name,
                 defaults={
                     'website': website,
-                    'email': '',
                     'phones': phone,
+                    'email': '',
                     'address': address
                 }
             )
 
             search_query.companies.add(company)
 
-    def save_mail(self, extractor: EmailCrawler):
+    def save_mail(self):
         if not self.website:
             return
-        result = extractor.crawl_sync(self.website)
-        if isinstance(result, list) and result:
-            emails_joined = ", ".join(map(str, result))
+        from apps.app.tasks import crawl_email_addresses 
+        result = crawl_email_addresses.apply_async(kwargs={"url": self.website}, queue='redis_tasks').get()
+        emails = result.get('emails', [])
+        if isinstance(emails, list) and emails:
+            emails_joined = ", ".join(map(str, emails))
             if len(emails_joined) >= 500:
                 return
             self.email = emails_joined

@@ -1,22 +1,21 @@
 from asyncio.log import logger
-from celery import shared_task
 from typing import Optional, List
 from pathlib import Path
+
 from apps.web.mail_send import MailSend
-from pathlib import Path
-import os
-
-
+from apps.celery import celery_rabbit
 from apps.admin_app.models import User
 
-@shared_task(bind=True)
+
+@celery_rabbit.task(name='apps.app.send_email_task', queue='rabbit_tasks', bind=True)
 def send_email_task(self, user_id: int, to: str, subject: str, text: str, attachments: Optional[List[str]] = None, sender_email: str | None = None):
     user = User.objects.get(id=user_id)
     mailer = MailSend(user)
     mailer.send(to, subject, text, attachments, sender_email=sender_email)
     return {"to": to, "status": "queued", "sender": sender_email}
 
-@shared_task(bind=True)
+
+@celery_rabbit.task(name='apps.app.cleanup_attachments', queue='rabbit_tasks', bind=True)
 def cleanup_attachments(self, attachment_paths: List[str]):
     if not attachment_paths:
         return {"removed": 0}
@@ -40,14 +39,14 @@ def cleanup_attachments(self, attachment_paths: List[str]):
     return {"removed": removed}
 
 
-@shared_task(bind=True)
+@celery_rabbit.task(name='apps.app.send_bulk_emails', queue='rabbit_tasks', bind=True)
 def send_bulk_emails(self, payloads: list, user_id: int, delay_s: int = 5):
     if not payloads:
         return {"count": 0}
     for i, p in enumerate(payloads):
-        send_email_task.apply_async(kwargs={"user_id": user_id, **p}, countdown=i * delay_s)
+        send_email_task.apply_async(kwargs={"user_id": user_id, **p}, countdown=i * delay_s, queue='rabbit_tasks')
     attachment_paths = payloads[0].get('attachments') if isinstance(payloads[0], dict) else []
     if attachment_paths:
         total_delay = (len(payloads) - 1) * delay_s + 30
-        cleanup_attachments.apply_async(args=[attachment_paths], countdown=total_delay)
+        cleanup_attachments.apply_async(args=[attachment_paths], countdown=total_delay, queue='rabbit_tasks')
     return {"count": len(payloads)}

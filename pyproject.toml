@@ -25,6 +25,7 @@ dependencies = [
     "psycopg2-binary>=2.9.10",
     "pydantic>=2.11.7",
     "pydantic-settings>=2.10.1",
+    "redis>=6.4.0",
     "requests>=2.32.4",
     "thefuck>=3.32",
     "vine>=5.1.0,<6.0",

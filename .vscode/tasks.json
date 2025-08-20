@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "run-django-tests",
+			"type": "shell",
+			"command": "python - << 'PY'\nimport os, sys, django\nos.environ.setdefault('DJANGO_SETTINGS_MODULE','apps.settings_test')\nfrom django.core.management import call_command\ncall_command('test','-v','2')\nPY",
+			"problemMatcher": [
+				"$tsc"
+			]
+		}
+	]
+}

@@ -24,12 +24,15 @@ class Config(BaseSettings):
     email_attachments_dir: str = "settings/email_attachments"
 
     rabbitmq_broker_url: str
+    redis_broker_url: str
 
     django_secret_key: str
     django_settings_module: str
 
+
     class Config:
         env_file = ".env"
+        env_prefix = ''
         case_sensitive = False
 
 config = Config()
