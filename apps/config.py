@@ -3,7 +3,6 @@ import os
 from dotenv import load_dotenv
 from pydantic_settings import BaseSettings
 
-from apps.web.mail_extract import EmailExtractor
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)    
@@ -34,4 +33,3 @@ class Config(BaseSettings):
         case_sensitive = False
 
 config = Config()
-email_extractor = EmailExtractor()

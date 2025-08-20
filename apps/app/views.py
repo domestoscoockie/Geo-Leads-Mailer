@@ -38,13 +38,13 @@ def index(request):
         if form.is_valid():
             city = form.cleaned_data['city']
             query = form.cleaned_data['query']
-            accuracy_km = form.cleaned_data['accuracy']
+            grid_size_km = form.cleaned_data['grid_size']
             try:
                 search_query = SearchQuery.objects.get(location=city, query=query)
                 logger.info(f"Found existing search query: {search_query.location} - {search_query.query}")
             except SearchQuery.DoesNotExist:
                 try:
-                    search_query = google_search(city, query, accuracy_km, user=user)
+                    search_query = google_search(city, query, grid_size_km, user=user)
                     logger.info(f"Created new search query: {search_query.location} - {search_query.query}")
                 except ValueError:
                     return JsonResponse({"error": "No results found"}, status=404)

@@ -1,8 +1,7 @@
 import json
-import requests
+import  httpx
 from apps.config import config, logger
 from typing import Self
-import requests
 import json
 from abc import ABC, abstractmethod
 from pydantic import BaseModel
@@ -44,8 +43,8 @@ class LocationQuery(Query):
             "address": self.location,
             "key": config.google_location_api_key
         }
-        
-        response = requests.get(url, params=params)
+
+        response = httpx.get(url, params=params)
         data = response.json()
         
         if data["results"]:
@@ -127,8 +126,8 @@ class LocationQuery(Query):
                 
                 if next_page_token:
                     data["pageToken"] = next_page_token
-                
-                response = requests.post(url, json=data, headers=headers)
+
+                response = httpx.post(url, json=data, headers=headers)
                 result = response.json()
                 
                 if "places" in result:

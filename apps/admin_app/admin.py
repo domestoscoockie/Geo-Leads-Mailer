@@ -18,9 +18,13 @@ class SearchQueryForm(forms.ModelForm):
 @admin.register(SearchQuery)
 class SearchQueryAdmin(admin.ModelAdmin):
     form = SearchQueryForm
-    list_display = ('location', 'query', 'get_users', 'accuracy', 'id')
+    list_display = ('location', 'query', 'get_users', 'grid_size_display', 'id')
     list_filter = ('location', 'accuracy')
     search_fields = ('query', 'location')
+
+    def grid_size_display(self, obj):
+        return f"{obj.accuracy} km (grid)"
+    grid_size_display.short_description = 'Grid Size'
 
     def get_users(self, obj):
         return ", ".join([u.username for u in obj.user.all()])

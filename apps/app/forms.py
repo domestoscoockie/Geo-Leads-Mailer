@@ -4,7 +4,7 @@ from django import forms
 class SearchForm(forms.Form):
 	city = forms.CharField(max_length=255)
 	query = forms.CharField(max_length=255)
-	accuracy = forms.IntegerField(min_value=1, max_value=50, initial=10)
+	grid_size = forms.IntegerField(min_value=1, max_value=50, initial=10)
 
 
 class SendEmailForm(forms.Form):

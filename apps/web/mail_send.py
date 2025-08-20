@@ -12,6 +12,9 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from apps.admin_app.models import User
 from apps.config import  config, logger
+from django.core.files.base import ContentFile
+from django.conf import settings
+
 import uuid
 
 SCOPES = ["https://mail.google.com/"]
@@ -40,11 +43,14 @@ class MailSend:
 
   def _save_token(self):
       token_json = self.creds.to_json()
-      old_name = self.user.token.name
-      self.user.token.save(f"token_{uuid.uuid4().hex}.json", ContentFile(token_json), save=True)
+
+      old_name = self.user.token.name if self.user.token and self.user.token.name else None
+      filename = f"token_{uuid.uuid4().hex}.json"
+      self.user.token.save(filename, ContentFile(token_json), save=True)
+
       if old_name and old_name != self.user.token.name:
         try:
-          old_path = os.path.join(os.path.dirname(self.user.token.path), os.path.basename(old_name))
+          old_path = os.path.join(settings.MEDIA_ROOT, old_name)
           if os.path.exists(old_path):
             os.remove(old_path)
         except OSError:
@@ -64,7 +70,8 @@ class MailSend:
     if attachments:
       for file_path in attachments:
         if not os.path.isfile(file_path):
-          continue  # Skip if file does not exist
+          continue  
+        
         with open(file_path, 'rb') as f:
           part = MIMEBase('application', 'octet-stream')
           part.set_payload(f.read())
@@ -82,7 +89,6 @@ class MailSend:
 
     message = self.create_message(sender_email, to, subject, text, attachments)
 
-    # Gmail API expects userId='me' for the authenticated user account
     self.service.users().messages().send(
       userId='me',
       body=message

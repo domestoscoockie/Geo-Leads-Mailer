@@ -1,10 +1,10 @@
 from apps.admin_app.models import SearchQuery, Company, User,\
     CompanySerializer
 from apps.web.web_search import LocationQuery
-from apps.web.mail_extract import EmailExtractor
 from apps.config import logger, config
 import os
 import uuid
+from apps.web.email_crawler import email_crawler
 
 
 def save_files(upload_files: list) -> list[str]:
@@ -26,8 +26,8 @@ def kilometers_to_geo_minutes(km: float) -> float:
     return max(0.25, min(minutes, 60.0))
 
 
-def google_search(city: str, query: str, accuracy_km: float, user: 'User') -> SearchQuery:
-    step_minutes = kilometers_to_geo_minutes(accuracy_km)
+def google_search(city: str, query: str, grid_size_km: float, user: 'User') -> SearchQuery:
+    step_minutes = kilometers_to_geo_minutes(grid_size_km)
     location_search = LocationQuery(location=city, language=user.language, country=user.country).set_query(query)
     rectangles = location_search.generate_rectangles(step_minutes=step_minutes)
     result = location_search.search(rectangles)
@@ -36,24 +36,19 @@ def google_search(city: str, query: str, accuracy_km: float, user: 'User') -> Se
         user=user,
         location=city,
         query=query,
-        accuracy=accuracy_km,
+        accuracy=grid_size_km,
         result=result
     )
     return search_query
 
 
 def extract_companies(search_query: SearchQuery) -> dict:
-    extractor = EmailExtractor()
     for company in search_query.companies.all():
         if not company.email:
-            company.save_mail(extractor)
-    
-    response_data = {
+            company.save_mail(email_crawler)
+    return {
         'search_query': f"{search_query.location}-{search_query.query}",
         'company_count': search_query.companies.count(),
         'accuracy': search_query.accuracy,
         'companies': CompanySerializer(search_query.companies.all(), many=True).data
     }
-
-    return response_data
-from django.contrib.auth.models import User 

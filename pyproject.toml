@@ -5,6 +5,8 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiodns>=3.5.0",
+    "aiohttp>=3.12.15",
     "black>=25.1.0",
     "celery==5.3.6",
     "django>=5.2.4",
@@ -25,4 +27,5 @@ dependencies = [
     "pydantic-settings>=2.10.1",
     "requests>=2.32.4",
     "thefuck>=3.32",
+    "vine>=5.1.0,<6.0",
 ]
