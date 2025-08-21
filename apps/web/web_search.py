@@ -151,17 +151,3 @@ class LocationQuery(Query):
             json.dump(results, f, ensure_ascii=False, indent=4)
 
 
-if __name__ == "__main__":
-    location_search = LocationQuery(location="Lublin", language="pl", country="PL")
-    
-    bounds = location_search.geometry()
-    logger.info("Bounds: %s", bounds)
-    
-    rectangles = location_search.generate_rectangles(step_minutes=6.0)
-    
-    location_search.set_query("sklep")
-    results = location_search.search(rectangles)
-    places_dict = results.get(location_search.location, {})
-
-    location_search.save(results)
-
