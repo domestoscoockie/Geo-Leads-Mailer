@@ -10,7 +10,7 @@ from apps.admin_app.models import User
 @celery_rabbit.task(name='apps.app.send_email_task', queue='rabbit_tasks', bind=True)
 def send_email_task(self, user_id: int, to: str, subject: str, text: str, attachments: Optional[List[str]] = None, sender_email: str | None = None):
     user = User.objects.get(id=user_id)
-    mailer = MailSend(user)
+    mailer = MailSend(user.username)
     mailer.send(to, subject, text, attachments, sender_email=sender_email)
     return {"to": to, "status": "queued", "sender": sender_email}
 

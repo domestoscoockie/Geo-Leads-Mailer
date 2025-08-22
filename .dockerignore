@@ -1,5 +1,8 @@
-.env
+,env
 .gitignore
 /uploads
 /.vscode
 /README.md
+/apps/app/tests
+/settings
+

@@ -20,41 +20,53 @@ import uuid
 SCOPES = ["https://mail.google.com/"]
 
 
+class MissingTokenError(Exception):
+  """Raised when a Gmail access token is required but not yet authorized."""
+  pass
+
+
 
 class MailSend:
-  def __init__(self, username: str):
-    
-    self.user = User.objects.get(username=username)
+  def __init__(self, user_or_username):
+    if isinstance(user_or_username, User):
+      self.user = user_or_username
+    else:
+      self.user = User.objects.get(username=user_or_username)
     self.creds = None
     if self.user.token and self.user.token.name and os.path.exists(self.user.token.path):
-      self.creds = Credentials.from_authorized_user_file(self.user.token.path, SCOPES)
+      try:
+        self.creds = Credentials.from_authorized_user_file(self.user.token.path, SCOPES)
+      except Exception as e:
+        logger.warning(f"Failed to load token file {self.user.token.path}: {e}")
+
+    if self.creds and self.creds.expired and self.creds.refresh_token:
+      try:
+        self.creds.refresh(Request())
+        self._save_token()
+      except Exception as e:
+        logger.warning(f"Token refresh failed; will require re-authorization: {e}")
+        self.creds = None
 
     if not self.creds or not self.creds.valid:
-      if self.creds and self.creds.expired and self.creds.refresh_token:
-        self.creds.refresh(Request())
-      else:
-        flow = InstalledAppFlow.from_client_secrets_file(
-            self.user.credentials.path, SCOPES
-        )
-        self.creds = flow.run_local_server(port=0)
-      self._save_token()
+      raise MissingTokenError("No valid Gmail token. User must authorize via /oauth/start.")
 
     self.service = build("gmail", "v1", credentials=self.creds)
 
   def _save_token(self):
-      token_json = self.creds.to_json()
+    if not self.creds:
+      return
+    token_json = self.creds.to_json()
+    old_name = self.user.token.name if self.user.token and self.user.token.name else None
+    filename = f"token_{uuid.uuid4().hex}.json"
+    self.user.token.save(filename, ContentFile(token_json), save=True)
 
-      old_name = self.user.token.name if self.user.token and self.user.token.name else None
-      filename = f"token_{uuid.uuid4().hex}.json"
-      self.user.token.save(filename, ContentFile(token_json), save=True)
-
-      if old_name and old_name != self.user.token.name:
-        try:
-          old_path = os.path.join(settings.MEDIA_ROOT, old_name)
-          if os.path.exists(old_path):
-            os.remove(old_path)
-        except OSError:
-          logger.warning(f"Failed to remove old token file {old_name}. It may not exist or is in use.")
+    if old_name and old_name != self.user.token.name:
+      try:
+        old_path = os.path.join(settings.MEDIA_ROOT, old_name)
+        if os.path.exists(old_path):
+          os.remove(old_path)
+      except OSError:
+        logger.warning(f"Failed to remove old token file {old_name}. It may not exist or is in use.")
 
 
   def create_message(self, sender: str, to: str, subject: str, message_text: str, attachments: list = None) -> dict:

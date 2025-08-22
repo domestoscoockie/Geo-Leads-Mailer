@@ -2,13 +2,20 @@ from django.shortcuts import render, redirect
 from django.http import JsonResponse
 
 from apps.admin_app.models import SearchQuery, Company, User
-from apps.app.utils import google_search, extract_companies, save_files
+from apps.app.utils import additional_user_access_to_search_query, google_search, extract_companies, save_files
 from .forms import SearchForm, SendEmailForm, LoginForm, RegisterForm
 from apps.config import logger
 from django.views.decorators.http import require_GET
 from django.contrib.auth.hashers import make_password, check_password
 from functools import wraps
 from .tasks import send_bulk_emails
+from google_auth_oauthlib.flow import InstalledAppFlow
+from google.oauth2.credentials import Credentials
+from google.auth.transport.requests import Request
+from pathlib import Path
+from django.conf import settings
+from apps.web.mail_send import SCOPES
+from django.core.files.base import ContentFile
 
 def _get_session_user(request):
     uid = request.session.get('uid')
@@ -41,13 +48,14 @@ def index(request):
             grid_size_km = form.cleaned_data['grid_size']
             try:
                 search_query = SearchQuery.objects.get(location=city, query=query)
+                additional_user_access_to_search_query(user, search_query)
                 if search_query.accuracy > grid_size_km:
                     search_query = google_search(city, query, grid_size_km, user=user)
             except SearchQuery.DoesNotExist:
                 search_query = google_search(city, query, grid_size_km, user=user)
             except ValueError:
                 return JsonResponse({"error": "No results found"}, status=404)
-            return JsonResponse(extract_companies(search_query, grid_size_km), status=200)
+            return JsonResponse(extract_companies(search_query, grid_size_km, user), status=200)
         else:
             return JsonResponse({'error': 'Invalid input', 'details': form.errors}, status=400)
     return render(request, 'app/index.html', {'current_user': user})
@@ -124,21 +132,29 @@ def get_companies_for_location_query(request):
     ]
     return JsonResponse({'companies': companies_data})
 
-
 def register(request):
     if request.method == 'POST':
-        form = RegisterForm(request.POST)
+        form = RegisterForm(request.POST, request.FILES)
         if form.is_valid():
             username = form.cleaned_data['username']
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
             language = form.cleaned_data.get('language','pl')
             country = form.cleaned_data.get('country','PL')
+            credentials = form.cleaned_data.get('credentials')
             if User.objects.filter(username=username).exists():
                 return render(request, 'app/register.html', {'error': 'Username already taken', 'form': form})
-            user = User.objects.create(username=username, email=email, password=make_password(password), language=language, country=country)
+            user = User.objects.create(
+                username=username,
+                email=email,
+                password=make_password(password),
+                language=language,
+                country=country,
+                credentials=credentials
+            )
             request.session['uid'] = user.id
-            return redirect('index')
+            # Redirect user to manual OAuth start page instead of launching local server inside container
+            return redirect('oauth_start')
         else:
             return render(request, 'app/register.html', {'error': 'Fix the errors below', 'form': form})
     return render(request, 'app/register.html', {'form': RegisterForm()})
@@ -167,4 +183,44 @@ def login(request):
 def logout(request):
     request.session.flush()
     return redirect('login')
+
+
+def oauth_start(request):
+    """Start OAuth by generating the Google auth URL and instructing user to paste code (console flow)."""
+    user = _get_session_user(request)
+    if not user:
+        return redirect('login')
+    cred_path = getattr(user.credentials, 'path', None)
+    if not cred_path or not Path(cred_path).is_file():
+        return render(request, 'app/oauth.html', {"error": "Brak pliku credentials."})
+
+    # If token already valid skip
+    if user.token and user.token.name and Path(user.token.path).is_file():
+        try:
+            creds = Credentials.from_authorized_user_file(user.token.path, SCOPES)
+            if creds and creds.valid and not creds.expired:
+                return redirect('send_email')
+            if creds and creds.expired and creds.refresh_token:
+                creds.refresh(Request())
+                user.token.save(user.token.name.split('/')[-1], ContentFile(creds.to_json()), save=True)
+                return redirect('send_email')
+        except Exception:
+            pass
+
+    flow = InstalledAppFlow.from_client_secrets_file(cred_path, SCOPES, redirect_uri="urn:ietf:wg:oauth:2.0:oob")
+    auth_url, _ = flow.authorization_url(prompt='consent', access_type='offline', include_granted_scopes='true')
+
+    if request.method == 'POST':
+        code = request.POST.get('code')
+        if not code:
+            return render(request, 'app/oauth.html', {"auth_url": auth_url, "error": "Podaj kod."})
+        try:
+            flow.fetch_token(code=code)
+            creds = flow.credentials
+            user.token.save(f"token_{user.id}.json", ContentFile(creds.to_json()), save=True)
+            return redirect('send_email')
+        except Exception as e:
+            return render(request, 'app/oauth.html', {"auth_url": auth_url, "error": f"Błąd: {e}"})
+
+    return render(request, 'app/oauth.html', {"auth_url": auth_url})
 

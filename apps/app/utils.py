@@ -41,7 +41,7 @@ def google_search(city: str, query: str, grid_size_km: float, user: 'User') -> S
     return search_query
 
 
-def extract_companies(search_query: SearchQuery, grid_size_km: float) -> dict:
+def extract_companies(search_query: SearchQuery, grid_size_km: float, current_user: 'User') -> dict:
     if not search_query.companies\
         .exclude(email__isnull=True)\
         .exclude(email='')\
@@ -61,3 +61,17 @@ def extract_companies(search_query: SearchQuery, grid_size_km: float) -> dict:
         'accuracy': search_query.accuracy,
         'companies': CompanySerializer(search_query.companies.all(), many=True).data
     }
+
+def additional_user_access_to_search_query(current_user: 'User', search_query: SearchQuery) -> None:
+    try:
+        if current_user not in search_query.user.all():
+            search_query.user.add(current_user)
+            search_query.refresh_from_db()
+
+        if search_query not in current_user.results.all():
+            current_user.results.add(search_query)
+            current_user.refresh_from_db()
+    except Exception as e:
+        logger.error(f"[SearchQuery attach] Error attaching user {current_user.id} to search_query {search_query.id}: {e}")
+
+

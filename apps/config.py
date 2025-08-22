@@ -1,5 +1,5 @@
 import logging
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 logging.basicConfig(level=logging.INFO)
@@ -19,18 +19,23 @@ class Config(BaseSettings):
 
     credentials_file: str = "settings/credentials.json"
     token_file: str = "settings/token.json"
-    email_attachments_dir: str = "settings/email_attachments"
+    email_attachments_dir: str = "uploads/email_attachments"
 
     rabbitmq_broker_url: str
     redis_broker_url: str
 
     django_secret_key: str
     django_settings_module: str
+    # Production toggles
+    debug: bool
+    allowed_hosts: str
 
 
-    class Config:
-        env_file = ".env"
-        env_prefix = ''
-        case_sensitive = False
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_prefix="",
+        case_sensitive=False,
+        extra="ignore",  
+    )
 
 config = Config()

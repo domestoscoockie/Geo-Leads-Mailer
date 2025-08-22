@@ -24,9 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config.django_secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config.debug
 
-ALLOWED_HOSTS = []
+# Comma-separated hosts in env; empty means allow none (Django will error if needed)
+ALLOWED_HOSTS = [h.strip() for h in config.allowed_hosts.split(',') if h.strip()] or []
 
 
 # Application definition
@@ -121,6 +122,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+
+# Media (uploaded credential & token JSON files live in 'uploads/...').
+MEDIA_ROOT = BASE_DIR  # 'uploads/...' will resolve under project root
+MEDIA_URL = "/media/"
+
+# Medi
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -136,3 +145,33 @@ CELERY_TASK_ALWAYS_EAGER = False
 CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
+
+# Logging configuration to ensure app logs are visible
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'simple': {
+            'format': '[{levelname}] {asctime} {name}: {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+    },
+    'loggers': {
+        'apps': {
+            'handlers': ['console'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+        # Fallback root
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        }
+    }
+}
