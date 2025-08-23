@@ -186,15 +186,13 @@ def logout(request):
 
 
 def oauth_start(request):
-    """Start OAuth by generating the Google auth URL and instructing user to paste code (console flow)."""
     user = _get_session_user(request)
     if not user:
         return redirect('login')
     cred_path = getattr(user.credentials, 'path', None)
     if not cred_path or not Path(cred_path).is_file():
         return render(request, 'app/oauth.html', {"error": "Brak pliku credentials."})
-
-    # If token already valid skip
+    
     if user.token and user.token.name and Path(user.token.path).is_file():
         try:
             creds = Credentials.from_authorized_user_file(user.token.path, SCOPES)

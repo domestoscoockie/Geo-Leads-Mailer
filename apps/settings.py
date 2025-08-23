@@ -118,17 +118,12 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.2/howto/static-files/
-
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Media (uploaded credential & token JSON files live in 'uploads/...').
-MEDIA_ROOT = BASE_DIR  # 'uploads/...' will resolve under project root
+MEDIA_ROOT = BASE_DIR / "uploads"
 MEDIA_URL = "/media/"
 
-# Medi
 
 
 # Default primary key field type
@@ -146,32 +141,3 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
-# Logging configuration to ensure app logs are visible
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'simple': {
-            'format': '[{levelname}] {asctime} {name}: {message}',
-            'style': '{',
-        },
-    },
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'simple',
-        },
-    },
-    'loggers': {
-        'apps': {
-            'handlers': ['console'],
-            'level': 'INFO',
-            'propagate': False,
-        },
-        # Fallback root
-        '': {
-            'handlers': ['console'],
-            'level': 'INFO',
-        }
-    }
-}
