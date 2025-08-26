@@ -6,10 +6,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)    
 
 class Config(BaseSettings):
-    app_name: str = "email_bot"
+    app_name: str = "GeoLeads Mailer"
 
-    serpapi_key: str
-    google_location_api_key: str
+    google_location_api_key: str 
 
     postgres_user: str
     postgres_password: str
@@ -26,9 +25,9 @@ class Config(BaseSettings):
 
     django_secret_key: str
     django_settings_module: str
-    # Production toggles
     debug: bool
     allowed_hosts: str
+    csrf_trusted_origins: str
 
 
     model_config = SettingsConfigDict(

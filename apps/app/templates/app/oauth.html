@@ -10,25 +10,12 @@
     {% if auth_url %}
       <ol class="list-decimal list-inside space-y-3 text-sm text-slate-600 dark:text-slate-300 mb-6">
         <li>Open the Google authorization page and sign in with the Gmail account you want to send emails from.</li>
-        <li>After granting access Google will show a verification code. Copy it and paste below.</li>
       </ol>
       <a href="{{ auth_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 mb-6 text-sm font-medium text-brand-600 dark:text-sky-400 hover:underline">
         <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/><path d="M15 12H3"/></svg>
         Open Google authorization
       </a>
       <form method="post" class="space-y-5">
-        {% csrf_token %}
-        <div>
-          <label for="code" class="block text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400 mb-2">Verification code</label>
-          <input id="code" name="code" required autocomplete="one-time-code" class="w-full rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700/70 px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500/60 focus:border-brand-500" placeholder="Paste code from Google" />
-        </div>
-        <div class="flex flex-wrap items-center gap-3">
-          <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-md bg-brand-600 hover:bg-brand-700 text-white px-5 py-2.5 text-sm font-medium shadow-soft focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-brand-600">Save token</button>
-          <a href="{{ auth_url }}" target="_blank" class="text-xs font-medium text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200">Open again</a>
-        </div>
-      </form>
-    {% else %}
-      <p class="text-sm text-slate-600 dark:text-slate-300">Authorization URL missing. Make sure you uploaded a valid credentials JSON file.</p>
     {% endif %}
     <p class="mt-8 text-xs text-slate-500 dark:text-slate-400">If you have already authorized this account you can <a href="/send_email" class="text-brand-600 dark:text-sky-400 hover:underline">go to sending</a>.</p>
   </div>

@@ -46,7 +46,7 @@ class UserForm(forms.ModelForm):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     form = UserForm
-    list_display = ('username', 'email', 'language', 'country', 'results_count', 'has_credentials')
+    list_display = ('username', 'email', 'language', 'country', 'results_count', 'has_credentials', 'token')
     search_fields = ('username', 'email')
     filter_horizontal = ('results',)
     

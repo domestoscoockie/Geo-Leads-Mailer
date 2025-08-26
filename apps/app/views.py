@@ -1,3 +1,4 @@
+from urllib import request
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 
@@ -9,13 +10,15 @@ from django.views.decorators.http import require_GET
 from django.contrib.auth.hashers import make_password, check_password
 from functools import wraps
 from .tasks import send_bulk_emails
-from google_auth_oauthlib.flow import InstalledAppFlow
+from google_auth_oauthlib.flow import InstalledAppFlow, Flow
 from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
 from pathlib import Path
 from django.conf import settings
 from apps.web.mail_send import SCOPES
 from django.core.files.base import ContentFile
+from django.urls import reverse
+
 
 def _get_session_user(request):
     uid = request.session.get('uid')
@@ -191,8 +194,8 @@ def oauth_start(request):
         return redirect('login')
     cred_path = getattr(user.credentials, 'path', None)
     if not cred_path or not Path(cred_path).is_file():
-        return render(request, 'app/oauth.html', {"error": "Brak pliku credentials."})
-    
+        return render(request, 'app/oauth.html', {"error": "No credentials file found."})
+
     if user.token and user.token.name and Path(user.token.path).is_file():
         try:
             creds = Credentials.from_authorized_user_file(user.token.path, SCOPES)
@@ -204,21 +207,50 @@ def oauth_start(request):
                 return redirect('send_email')
         except Exception:
             pass
-
-    flow = InstalledAppFlow.from_client_secrets_file(cred_path, SCOPES, redirect_uri="urn:ietf:wg:oauth:2.0:oob")
-    auth_url, _ = flow.authorization_url(prompt='consent', access_type='offline', include_granted_scopes='true')
-
+    redirect_uri = request.build_absolute_uri(reverse('oauth_callback'))
+    flow = Flow.from_client_secrets_file(
+        cred_path,
+        scopes=SCOPES,
+        redirect_uri=redirect_uri  
+    )
+    auth_url, state = flow.authorization_url(
+        access_type='offline',
+        include_granted_scopes='true',
+        prompt='consent'
+    )
+    request.session['oauth_state'] = state
     if request.method == 'POST':
-        code = request.POST.get('code')
-        if not code:
-            return render(request, 'app/oauth.html', {"auth_url": auth_url, "error": "Podaj kod."})
-        try:
-            flow.fetch_token(code=code)
-            creds = flow.credentials
-            user.token.save(f"token_{user.id}.json", ContentFile(creds.to_json()), save=True)
-            return redirect('send_email')
-        except Exception as e:
-            return render(request, 'app/oauth.html', {"auth_url": auth_url, "error": f"Błąd: {e}"})
-
+        return redirect(auth_url)
     return render(request, 'app/oauth.html', {"auth_url": auth_url})
 
+
+def oauth_callback(request):
+    try:
+        user = _get_session_user(request)
+        if not user:
+            return redirect('login')
+
+        cred_path = getattr(user.credentials, 'path', None)
+        if not cred_path or not Path(cred_path).is_file():
+            return render(request, 'app/oauth.html', {"error": "No credentials file found."})
+
+        state = request.session.pop('oauth_state', None)
+        redirect_uri = request.build_absolute_uri(reverse('oauth_callback'))
+        flow = Flow.from_client_secrets_file(
+            cred_path,
+            scopes=SCOPES,
+            state=state,
+            redirect_uri=redirect_uri
+        )
+
+        flow.fetch_token(authorization_response=request.build_absolute_uri())
+
+        creds = flow.credentials
+        user.token.save(f"token.json", ContentFile(creds.to_json()), save=True)
+        return render(request, 'app/index.html', {"success": "Registration successful."})
+
+    except Exception as e:
+        print(f"Error during OAuth callback: {e}")
+        user.delete()
+
+        return render(request, 'app/register.html', {"error": "An error occurred during registration."})

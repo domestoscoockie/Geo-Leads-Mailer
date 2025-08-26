@@ -13,21 +13,25 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from .config import config
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config.django_secret_key
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config.debug
 
-# Comma-separated hosts in env; empty means allow none (Django will error if needed)
 ALLOWED_HOSTS = [h.strip() for h in config.allowed_hosts.split(',') if h.strip()] or []
+
+
+CSRF_TRUSTED_ORIGINS = [o.strip() for o in config.csrf_trusted_origins.split(',') if o.strip()]
+
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
+
 
 
 # Application definition

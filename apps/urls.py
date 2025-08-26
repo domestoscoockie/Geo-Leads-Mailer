@@ -25,5 +25,4 @@ urlpatterns = [
     path('', include('apps.app.urls')),
 ]
 
-# Serve static files in development (Gunicorn does not serve static!)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

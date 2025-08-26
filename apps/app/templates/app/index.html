@@ -80,5 +80,29 @@
     const accuracyBadge=document.getElementById('gridSizeBadge');
     function setLoading(){resultsSection.classList.remove('hidden');resultDiv.innerHTML=`<div class='grid gap-4 sm:grid-cols-2 lg:grid-cols-3 animate-pulse'>${Array.from({length:6}).map(()=>`<div class='rounded-lg border border-slate-200 dark:border-slate-700 bg-white/60 dark:bg-slate-800/50 p-4 h-36'></div>`).join('')}</div>`}
     form.addEventListener('submit',async e=>{e.preventDefault();const city=document.getElementById('city').value;const query=document.getElementById('query').value;const accuracy=document.getElementById('grid_size_km').value||'10';const csrfToken=document.querySelector('[name=csrfmiddlewaretoken]').value;setLoading();try{const resp=await fetch('',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','X-CSRFToken':csrfToken},body:`city=${encodeURIComponent(city)}&query=${encodeURIComponent(query)}&grid_size=${encodeURIComponent(accuracy)}`});const data=await resp.json();if(data&&Array.isArray(data.companies)){const companies=data.companies;const companyCount=data.company_count||companies.length;const items=companies.map(c=>{const emailBadge=c.email?`<span class='inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300'>${c.email}</span>`:'';const website=c.website?`<a class='truncate text-brand-600 hover:underline dark:text-sky-400' target='_blank' href='${c.website}'>${c.website}</a>`:'<span class=\"text-slate-400\">—</span>';return `<div class='group rounded-xl border border-slate-200 dark:border-slate-700 bg-white/70 dark:bg-slate-800/60 p-4 hover:shadow-md transition shadow-soft flex flex-col gap-3'><div class='flex items-start justify-between gap-3'><h3 class='font-semibold text-sm leading-snug text-slate-800 dark:text-slate-100 group-hover:text-brand-600 dark:group-hover:text-sky-400 line-clamp-2'>${c.name}</h3></div>${c.address?`<p class='text-xs text-slate-500 dark:text-slate-400 leading-snug line-clamp-2'>${c.address}</p>`:''}<div class='mt-auto flex flex-wrap items-center gap-2 text-xs'>${emailBadge}${c.phones?`<span class='px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-700/60 text-slate-600 dark:text-slate-300'>${c.phones}</span>`:''}</div><div class='pt-1 text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-2'>${website}</div></div>`;}).join('');const accVal=parseInt(accuracy,10);resultDiv.innerHTML=`<div class='mb-5 flex flex-wrap items-center gap-4'><div class='text-sm text-slate-600 dark:text-slate-300'>Found <strong>${companyCount}</strong> companies for <span class='font-medium text-slate-900 dark:text-white'>${data.search_query||''}</span> (${accVal}x${accVal} km grid)</div></div><div class='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>${items||'<div class=\\"text-slate-600\\">No companies</div>'}</div>`;if(typeof data.accuracy==='number'){accuracyBadge.textContent=`Grid: ${Math.round(data.accuracy)} km`;accuracyBadge.classList.remove('hidden');}exportBtn.classList.remove('hidden');exportBtn.onclick=()=>{const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`results-${Date.now()}.json`;a.click();URL.revokeObjectURL(url);pushToast('Exported JSON','success')};pushToast('Search completed','success')}else if(data&&data.error){resultDiv.innerHTML=`<div class='rounded-lg border border-rose-300/60 bg-rose-50 text-rose-700 px-4 py-3 text-sm'>Error: ${data.error}</div>`;pushToast(data.error,'error')}else{resultDiv.innerHTML=`<div class='rounded-lg border border-rose-300/60 bg-rose-50 text-rose-700 px-4 py-3 text-sm'>Invalid response from server.</div>`;pushToast('Invalid server response','error')}}catch(err){resultDiv.innerHTML=`<div class='rounded-lg border border-rose-300/60 bg-rose-50 text-rose-700 px-4 py-3 text-sm'>Network error: ${err.message}</div>`;pushToast('Network error','error')}});
+    const searchPopup = document.createElement('div');
+    searchPopup.id = 'searchPopup';
+    searchPopup.style.position = 'fixed';
+    searchPopup.style.top = '10px';
+    searchPopup.style.right = '10px';
+    searchPopup.style.padding = '10px';
+    searchPopup.style.backgroundColor = '#f9f9f9';
+    searchPopup.style.border = '1px solid #ccc';
+    searchPopup.style.boxShadow = '0 2px 5px rgba(0,0,0,0.2)';
+    searchPopup.style.zIndex = '1000';
+    searchPopup.style.display = 'none';
+    searchPopup.innerHTML = '<strong>Search in progress:</strong> This may take a while. You can leave the page, and the search will continue in the background.';
+    document.body.appendChild(searchPopup);
+
+    function showSearchPopup() {
+        searchPopup.style.display = 'block';
+        setTimeout(() => {
+            searchPopup.style.display = 'none';
+        }, 10000); 
+    }
+
+    form.addEventListener('submit', (e) => {
+        showSearchPopup();
+    });
 </script>
 {% endblock %}
