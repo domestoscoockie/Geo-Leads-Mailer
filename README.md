@@ -16,4 +16,27 @@ GeoLeads Mailer is an application designed to automate finding lead's mails via 
 - Redis
 - Docker (optional)
 
+## Application Flow
+
+Below is a simplified ASCII diagram showing the flow of the application:
+
+```
++----------------+       +----------------+       +----------------+
+|  User Input    | --->  |  Django Views  | --->  |  Celery Tasks  |
++----------------+       +----------------+       +----------------+
+        |                        |                        |
+        v                        v                        v
++----------------+       +----------------+       +----------------+
+|  Database      | <-->  |  Redis Queue   |       |  Email Sender  |
++----------------+       +----------------+       +----------------+
+```
+
+This diagram illustrates the following steps:
+1. **User Input**: Data is provided by the user through the frontend.
+2. **Django Views**: The backend processes the input and triggers tasks.
+3. **Celery Tasks**: Background tasks are queued and executed asynchronously.
+4. **Database**: Data is stored or retrieved as needed.
+5. **Redis Queue**: Tasks are managed in the queue for processing and interact with the database.
+6. **Email Sender**: Emails are sent to the leads at regular intervals to ensure higher delivery reliability.
+
 
